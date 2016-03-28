@@ -1,0 +1,44 @@
+extends molly/layout/-molly_base.jade
+{% from 'molly/layout/-article.jade' import fn_article %}
+
+block title
+	{{"Tags-"~site.title }}
+
+block widget
+	img(src="/t/molly/css/img/diary.png",style="position:fixed;bottom:0;right:0;z-index:99",alt="")
+
+block content
+	+fn_article('Tags', 'link')
+		p
+			for tag_name, tag_count in site.tags
+				code
+					a(href="#{{ tag_name }}-ref")
+						i.icon-tag
+						{{ tag_name }}
+						span= tag_count
+
+		for tag_name, tag_count in site.tags
+			h2(id="{{ tag_name }}-ref")= tag_name
+			posts = get_posts_by_tags(tag_name)
+			for post in posts
+				if post.metadata.stamp
+					div(class="format-{{post.metadata['stamp']}}",style="margin-bottom: 20px;")
+						a(href=post.url, title=post.title)
+							h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+								if post.metadata.stamp
+									i(class="icon-{{post.metadata.stamp}}")
+								else
+									i.icon-standard
+								post.title
+							time(datetime=post.date, style="float:right")= post.date
+				else
+					.format-standard(style="margin-bottom: 20px;")
+						a(href=post.url, title=post.title)
+							h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+								if post.metadata.stamp
+									i(class="icon-{{post.metadata.stamp}}")
+								else
+									i.icon-standard
+								post.title
+							time(datetime=post.date, style="float:right")= post.date
+						

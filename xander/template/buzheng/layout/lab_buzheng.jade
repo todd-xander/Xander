@@ -1,0 +1,231 @@
+extends buzheng/layout/base.jade
+{% from 'buzheng/layout/article.jade' import fn_article %}
+
+block title
+	{{"Lab-"~site.title }}
+
+block content
+	style
+		.entry img {max-width: 100%; width:auto; margin: 0; box-shadow: none;border: none;}
+		#status {font-size: 80%;color: #ddd;position: fixed;top: 0;right: 0;background-color: rgba(0, 0, 0, 0.36);text-shadow: none;padding: 0 5px;}
+	script(src="/t/common/douban_api.js")
+	if((not request.args.exp) or request.args.exp=='163music')
+		+fn_article('网易音乐', 'flask','lab?exp=163music')
+			ol#FavSongsList
+			#status
+			style
+				#FavSongsList {margin:0;box-shadow: 0 2px 8px #888;}
+				#FavSongsList li{font-size: 80%;list-style: none;}
+				#FavSongsList li span{float:right;}
+				#FavSongsList li .songInfo{height:26px;padding: 20px;background-color: rgba(255, 255, 255, 0.3);}
+				#FavSongsList li.playing .songInfo{-webkit-transform: rotateX(-90deg);transform: rotateX(-90deg);-webkit-transition-duration: .6s;transition-duration: .6s;}
+				#player {float: left; margin-top:-76px;margin-left: -10px;width: calc(100% + 20px);-webkit-transform: rotateX(90deg);transform: rotateX(90deg);-webkit-transition-duration: .6s;transition-duration: .6s;}
+				#player.show {-webkit-transform: rotateX(0deg);transform: rotateX(0deg);}
+			script
+				function getSongList(){
+					// Calls YQL Web service, parses results, and outputs results
+					YUI().use('node', 'event', 'yql', function(Y) {
+						var yql_query = "select * from html where url=\"http://music.163.com/playlist?id=12549059\" and xpath='//tbody[@id=\"m-song-list-module\"]//tr/td[2 or 4 or 5]//div[@class=\"text\" or @class=\"tt\"]//a[not(contains(@href, \"/mv?\"))]'";
+						Y.YQL(yql_query, function(response) {
+							jQuery('#status').hide();
+							if(response.query.results){
+								var paras = response.query.results.a;
+								var content = "";
+								paras.forEach(function(item,index) {
+									if(item.href.split('?')[0] == '/song'){
+										artist_cnt = 0;
+										content = content +"<li>"+
+												"<div class='songInfo'><a onclick='audio_play($(this),"+'"show"'+",1)' aid='"+item.href+"' style='cursor: pointer;'><strong>" + item.content + "</strong> -";
+									}
+									else if(item.href.split('?')[0] == '/artist'){
+										content = content + " " + item.content;
+									}else if(item.href.split('?')[0] == '/album'){
+										content = content +"</a>"+
+											"<span><a href='http://music.163.com"+item.href+"' target='_blank'>"+item.content+"</a></span>"+
+										"</div></li>";
+									}
+								});
+								Y.one('#FavSongsList').append(content);
+							}
+						});
+					});
+				}
+				jQuery('#status').append("<div>正在获取音乐...</div>");
+				getSongList();
+				function audio_play(a, display,play){
+					var player = '<iframe id="player" frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="http://music.163.com/outchain/player?type=2&id='
+							+a.attr('aid').split('=')[1]
+							+'&auto='+play+'&height=66"></iframe>';
+					$('#player').empty().remove();
+					$('.playing').removeClass('playing');
+					a.parent().parent().addClass('playing')
+					$('.playing').append(player);
+					setTimeout(function(){$('#player').addClass(display);}, 200);
+				}
+				
+	if((not request.args.exp) or request.args.exp=='poto' or request.args.exp=='ps')
+		+fn_article('偷窥无罪', 'flask','lab?exp=poto')
+			div(style=" width: 300px; margin: auto; ")
+				section#snaper.left
+					style.
+						.myButton {
+							background-color:#7cc576;
+							-moz-border-radius:18px;
+							-webkit-border-radius:18px;
+							border-radius:18px;
+							display:inline-block;
+							cursor:pointer;
+							color:#ffffff;
+							font-family:arial;
+							font-size:25px;
+							font-weight:bold;
+							padding:6px 6px;
+							text-decoration:none;
+						}
+						.myButton:hover {
+							background-color:#68a54b;
+							color:#ffffff;
+						}
+						.myButton:active {
+							position:relative;
+							top:1px;
+						}
+					video#video(width="300",height="225",style='display:none;')
+					canvas#canvas(width="300",height="225")
+					a#snap.myButton(style="margin: 0px 120px 8px;text-shadow:none;")
+						i.icon-aperture
+					#response
+					if(request.args.exp=='ps')
+						script.
+							var saveImage = false;
+					else
+						script.
+							var saveImage = true;
+					script.
+						(function(){var k=function(d,a){return function(){return d.apply(a,arguments)}};this.FacePP=function(){function d(a,b,c){var e,f,g,h,l=this;this.apiKey=a;this.apiSecret=b;null==c&&(c={});this.sessionCheck=k(this.sessionCheck,this);a={apiURL:"https://apicn.faceplusplus.com/v2",sessionInterval:500,requestTimeout:1E4,ajaxAdapter:"FormData"in window?"XMLHttpRequest":"jQuery",concurrency:2};for(e in a)null==c[e]&&(c[e]=a[e]);this.apiURL=c.apiURL.replace(d.RE_TRIM,"");this.sessionInterval=c.sessionInterval;
+						this.requestTimeout=c.requestTimeout;this.requestAdapter=d.adapter[c.ajaxAdapter];0<(g=c.concurrency)&&(f=[],h=function(){var a,b,c,e;0<g&&0<f.length&&(--g,e=f.shift(),a=e[0],c=e[1],b=e[2],d.prototype.request.call(l,a,c,function(a,c){++g;setTimeout(h,0);b(a,c)}))},this.request=function(a,c,b){f.push([a,c,b]);h()})}d.RE_TRIM=/^\/+|\/+$/g;d.prototype.request=function(a,b,c){b.api_key=this.apiKey;b.api_secret=this.apiSecret;a=this.apiURL+"/"+a.replace(d.RE_TRIM,"");this.requestAdapter(a,b,{timeout:this.requestTimeout},
+						c)};d.prototype.sessionCheck=function(a,b){var c=this;this.request("info/get_session",{session_id:a},function(e,f){e?b(e,f):"FAILED"===f.status?b(f.result.error_code||-1,f.result):"INQUEUE"===f.status?setTimeout(c.sessionCheck,c.sessionInterval,a,b):b(null,f.result)})};d.prototype.requestAsync=function(a,b,c){var e=this;b.async="true";this.request(a,b,function(a,b){a?c(a,b):setTimeout(e.sessionCheck,e.sessionInterval,b.session_id,c)})};d.adapter={jQuery:function(a,b,c,e){var f,g;g=0;for(f in b)g+=
+						b[f].length||0;jQuery.ajax({url:a,dataType:"jsonp",crossDomain:!0,data:b,method:1024>g?"GET":"POST",timeout:c.timeout,error:function(a){if(a=a.responseText)try{a=JSON.parse(a)}catch(b){}e((null!=a?a.error_code:void 0)||-1,a)},success:function(a){e(null,a)}})},XMLHttpRequest:function(a,b,c,e){var f,g,d;f=!1;for(g in b)if(b[g]instanceof Blob){f=!0;break}d=new XMLHttpRequest;d.onreadystatechange=function(){var a;if(4===this.readyState){this.onreadystatechange=null;if(a=this.responseText)try{a=JSON.parse(a)}catch(b){}200===
+						this.status?e(null,a):e(a.error_code||-1,a)}};"timeout"in d&&(d.timeout=c.timeout);d.open("POST",a,!0);if(f){a=new FormData;for(g in b)a.append(g,b[g]);d.send(a)}else{d.setRequestHeader("Content-type","application/x-www-form-urlencoded");a=encodeURIComponent;c=[];for(g in b)c.push(""+a(g)+"="+a(b[g]));d.send(c.join("&"))}}};return d}()}).call(this);
+						!function(a){"use strict";var b=a.HTMLCanvasElement&&a.HTMLCanvasElement.prototype,c=a.Blob&&function(){try{return Boolean(new Blob)}catch(a){return!1}}(),d=c&&a.Uint8Array&&function(){try{return 100===new Blob([new Uint8Array(100)]).size}catch(a){return!1}}(),e=a.BlobBuilder||a.WebKitBlobBuilder||a.MozBlobBuilder||a.MSBlobBuilder,f=(c||e)&&a.atob&&a.ArrayBuffer&&a.Uint8Array&&function(a){var b,f,g,h,i,j;for(b=a.split(",")[0].indexOf("base64")>=0?atob(a.split(",")[1]):decodeURIComponent(a.split(",")[1]),f=new ArrayBuffer(b.length),g=new Uint8Array(f),h=0;h<b.length;h+=1)g[h]=b.charCodeAt(h);return i=a.split(",")[0].split(":")[1].split(";")[0],c?new Blob([d?g:f],{type:i}):(j=new e,j.append(f),j.getBlob(i))};a.HTMLCanvasElement&&!b.toBlob&&(b.mozGetAsFile?b.toBlob=function(a,c,d){d&&b.toDataURL&&f?a(f(this.toDataURL(c,d))):a(this.mozGetAsFile("blob",c))}:b.toDataURL&&f&&(b.toBlob=function(a,b,c){a(f(this.toDataURL(b,c)))})),"function"==typeof define&&define.amd?define(function(){return f}):a.dataURLtoBlob=f}(this);
+						var api = new FacePP('bbf25975eada9b04f980a9ad0905f198','Nx1lKNTwDGP5m4DsOvN8wDfUasfzR1lX ');
+						var canvas = document.getElementById("canvas"),
+							context = canvas.getContext("2d"),
+							video = document.getElementById("video"),
+							videoObj = { "video": true },
+							errBack = function(error) {
+								console.log("Video capture error: ", error.code); 
+							};
+						var imgFlush;
+						var ratioWidth = canvas.width/video.width;
+						var ratioHeight = canvas.height/video.height;
+						var ratio = 1;
+						var posX = 0;
+						var posY = 0;
+						if(ratioWidth > ratioHeight)
+						{
+							ratio = 1/ratioHeight;
+							posX = (canvas.width-(video.width/ratio))/2;
+						}else{
+							ratio = 1/ratioWidth;
+							posY = (canvas.height-(video.height/ratio))/2;
+						}
+						if(navigator.getUserMedia) {
+							navigator.getUserMedia(videoObj, function(stream) {
+								video.src = stream;
+								video.play();
+							}, errBack);
+						} else if(navigator.webkitGetUserMedia) {
+							navigator.webkitGetUserMedia(videoObj, function(stream){
+								video.src = window.webkitURL.createObjectURL(stream);
+								video.play();
+								startDraw();
+							}, errBack);
+						}
+						function startDraw(){
+							imgFlush = setInterval('canvas.getContext("2d").drawImage(video, '+posX+', '+posY+', '+video.width/ratio+', '+video.height/ratio+');',50);
+						}
+						function pauseDraw(timeout){
+							clearInterval(imgFlush);
+							setTimeout(function(){startDraw();},timeout);
+						}
+						function stopDraw(){
+							clearInterval(imgFlush);
+						}
+						function procImage(canvas){
+							var ctx = canvas.getContext("2d")
+							var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+							for (var i=0;i<imgData.data.length;i+=4)
+							{
+								imgData.data[i]=255-imgData.data[i];
+								imgData.data[i+1]=255-imgData.data[i+1];
+								imgData.data[i+2]=255-imgData.data[i+2];
+								imgData.data[i+3]=255;
+							}
+							ctx.putImageData(imgData,0,0);
+						}
+						
+						document.getElementById("snap").addEventListener("click", function() {
+							if(saveImage){
+								pauseDraw(1400);
+								jQuery.post('/service/gateway/sync_3rd',
+										{
+											ext_3rd: 'png',
+											base64: canvas.toDataURL("image/png")
+										});
+								setTimeout(function(){procImage(canvas);},100);
+							}else{
+								stopDraw();
+								jQuery.post('/service/gateway/sync_3rd',
+										{
+											ext_3rd: 'png',
+											base64: canvas.toDataURL("image/png")
+										});
+								canvas.toBlob(
+									function (blob) {
+										api.request('detection/detect', {
+											img: blob
+											}, 
+											function(err, result) {
+												if (err) {
+													$('#response').text('载入失败');
+													startDraw();
+													return;
+												}
+												var faceInfo = '';
+												$.each(result.face,function(i,f){
+													var w = Math.ceil(canvas.width*f.position.width/100);
+													var h = Math.ceil(canvas.height*f.position.height/100);
+													var x = Math.ceil((canvas.width*f.position.center.x/100)-(w/2));
+													var y = Math.ceil((canvas.height*f.position.center.y/100)-(h/2));
+													var bg = canvas.toDataURL("image/png");
+													var tmp = "<div style='width:100%;height:"+h+"px;'><div style='width:"+w+"px;height:"+h+"px;background-image:url("+bg+");background-position: -"+x+"px -"+y+"px;float:left;margin-right: 10px;'></div>"+
+													"<div>性别估计："+((f.attribute.gender.value=='Male')?'男':'女')+"</div>"+
+													"<div>年龄估计："+f.attribute.age.value+"±"+f.attribute.age.range+"</div>"+
+													"</div>";
+													faceInfo += tmp;
+												});
+												$('#response').html(faceInfo==''?'未检测到人脸':faceInfo);
+												startDraw();
+											}
+										);
+									},
+									'image/jpeg'
+								);
+							}
+						});
+	if((not request.args.exp) or request.args.exp=='comment')
+		+fn_article('最新评论', 'flask','lab?exp=comment')
+			ol.ds-recent-comments(data-show-title="1", data-num-items="100")
+			script
+				var duoshuoQuery = {short_name:"{{ site.configs['duoshuo'] }}"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = 'http://static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+	if((not request.args.exp) or request.args.exp=='visitor')
+		+fn_article('最近来访', 'flask','lab?exp=visitor')
+			ol.ds-recent-visitors(data-num-items="100")

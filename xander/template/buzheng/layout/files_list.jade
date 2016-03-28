@@ -1,0 +1,74 @@
+{% from 'buzheng/layout/article.jade' import fn_album %}
+{% from 'buzheng/layout/article.jade' import fn_polaroid %}
+style
+	.bread_nav{
+		padding: 10px;
+	}
+	.bread_nav li{display:inline-block;}
+	.bread_nav li a{color: #888;
+		display: block;
+		background: rgba(0,0,0,0.1);
+		text-decoration: none;
+		position: relative;
+		height: 40px;
+		line-height: 40px;
+		padding: 0 10px 0 5px;
+		text-align: center;
+		margin-right: 23px;}
+	.bread_nav li:first-child a{
+		padding-left: 15px;
+		-webkit-border-radius: 4px 0 0 4px;
+		-moz-border-radius: 4px 0 0 4px;
+		-ms-border-radius: 4px 0 0 4px;
+		-o-border-radius: 4px 0 0 4px;
+		border-radius: 4px 0 0 4px;
+	}
+	.bread_nav li a:before, .bread_nav li a:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		border: 0 solid rgba(0,0,0,0.1);
+		border-width: 20px 10px;
+		width: 0;
+		height: 0;
+	}
+	.bread_nav li:first-child a:before {
+		border: none;
+	}
+	.bread_nav li a:before {
+		left: -20px;
+		border-left-color: transparent;
+	}
+	.bread_nav li a:after {
+		left: 100%;
+		border-color: transparent;
+		border-left-color: rgba(0,0,0,0.1);
+	}
+	@media screen and (max-width: 800px) {
+		.bread_nav li a{
+			font-size: 80%;
+			height: 20px;
+			line-height: 20px;
+		}
+		.bread_nav li a:before, .bread_nav li a:after {
+			border-width: 10px 10px;
+		}
+		.flex-control-nav { display: none;}
+	}
+{{ bread_nav(get_request_path(offset=2),'/folder/'~site.configs.file_path, prefix_name='相册', split_by='') }}
+div(style="-webkit-column-width: 460px;-moz-column-width:160px;-o-colum-width:160px;-webkit-column-gap: 10px;-moz-column-gap:1px;-o-column-gap:1px;margin-top: 50px")
+	for file in files
+		if file.content_type == 'folder'
+			+fn_album(file.title, request.url_root~"folder/"~file.path~"/")
+				.entry-thumb.entry-gallery
+					.flexslider
+						ul.slides
+							images = get_data(path=file.path, type='image', limit=5)
+							for image in images
+								li
+									img(src="{{image.url}}?width=320&amp;height=200&amp;fixed=true",alt=image.title)
+		else
+			+fn_polaroid(file.title, request.url_root~"file/"~file.path)
+				.entry-thumb
+					a(href="{{ file.url }}")
+						img(src="{{ file.url }}?width=428",alt=file.title)

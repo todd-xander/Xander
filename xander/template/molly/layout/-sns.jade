@@ -1,0 +1,40 @@
+if site.configs.jiathis
+	.jiathis_style(style="padding: 30px 0px 0px 0px;")
+		span.jiathis_txt= '分享到:'
+		a.jiathis_button_tsina
+		a.jiathis_button_tqq
+		a.jiathis_button_ydnote
+		a.jiathis_button_renren
+		a.jiathis_button_weixin
+		a.jiathis.jiathis_txt.jiathis_separator.jtico.jtico_jiathis(href="http://www.jiathis.com/share?uid=1762890", target="_blank")
+
+	script(type="text/javascript",defer="defer")
+		var jiathis_config={
+			data_track_clickback:true,
+			siteNum:6,
+			sm:"qzone,tsohu,kaixin001,douban,t163,googleplus",
+			summary:"",
+			boldNum:0,
+			ralateuid:{
+				"tsina":"{{site.configs['weibo']}}"
+			},
+			hideMore:false
+		}
+
+	script(defer="defer",type="text/javascript",src="http://v3.jiathis.com/code_mini/jia.js?uid=1762890",charset="utf-8")
+	style.
+		.jiathis_style .jtico{height:18px !important; padding:0px 5px 0px 5px !important; background-image:none;}
+		.jtico_tsina:before{content: '\e815';font-family: "fontello";}
+		.jtico_tsina:hover{color: rgb(230,22,45);}
+		.jtico_tqq:before{content: '\e803';font-family: "fontello";}
+		.jtico_tqq:hover{color: rgb(90,180,255);}
+		.jtico_ydnote:before{content: '\e843';font-family: "fontello";}
+		.jtico_ydnote:hover{color: rgb(11,167,241);}
+		.jtico_renren:before{content: '\e804';font-family: "fontello";}
+		.jtico_renren:hover{color: rgb(0,96,169);}
+		.jtico_weixin:before{content: '\e828';font-family: "fontello";}
+		.jtico_weixin:hover{color: rgb(150,200,35);}
+		.jtico_jiathis:before{content: '\e85a';font-family: "fontello";}
+		.jtico_jiathis:hover{color: rgb(122,199,68);}
+		.jiathis_style .jiadiv_01 .jtico:before{content: '\e85a\0020';font-family: "fontello";color:#888}
+		.jiathis_style .jiathis_txt {font-size: 15px;}

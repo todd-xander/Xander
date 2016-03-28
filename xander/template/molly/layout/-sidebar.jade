@@ -1,0 +1,189 @@
+#spot-holder
+.site-nav
+	.site-nav-inner
+		a#for_search(href="/",style="display:none;")
+		i.icon-cancel-circled.drawer-button(style="font-size: 23px;float: right;cursor: pointer;margin-top: 5px;")
+		.container
+			#masthead.site-header(role="banner")
+				div(style="width: 180px;height: 180px;margin: 25px;border-radius: 50%;overflow: hidden;")
+					h1.site-title.display-logo					
+						a(href="/",title="Logo",rel="home")
+							if site.configs.avatar
+								img#favicon-image(src=site.configs.avatar, style="-webkit-transform: scale(1.2,1.2);",alt="Logo")
+			#main-sidebar.widget-area(role="complementary")
+				aside#nav_menu-2.widget.widget_nav_menu
+					.menu-main-menu-container
+						h3.widget-title
+							a(href="/")= "Pages"
+						ul#menu-main-menu.menu
+							li#menu-item-143.menu-item.menu-item-type-custom.menu-item-object-custom.menu-item-home.menu-item-143
+								a(href="/")
+									i.icon-leaf
+									|Home
+							li#menu-item-112.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-112
+								a(href="/folder")
+									i.icon-leaf
+									|Album
+							li#menu-item-97.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-97
+								a(href="/about")
+									i.icon-leaf
+									|About
+				aside#categories-2.widget.widget_categories
+					h3.widget-title
+						a(href="/category")= "Categories"
+					ul
+						for post_folder in categories
+							li.cat-item
+								a(href="/category#{{ post_folder.title }}-ref")
+									i.icon-archive
+									{{post_folder.title}}
+						if site._id == 'dropbox-168931296-xander'
+							li.cat-item
+								a(href="/lab")
+									i.icon-flask
+									|Lab
+				aside#archives-2.widget.widget_archive
+					h3.widget-title
+						a(href="/archive")= "Archives"
+					ul
+						{%set total_posts = get_data(type='post')%}
+						{%set entries = total_posts.group('-date:year+month')%}
+						each year, posts in entries
+							li
+								a(href="/archive#{{ year[0] }}-{{ year[1] }}",title="{{ year[0] }}-{{ year[1] }}")
+									i.icon-calendar
+									{{year[0]~"-"~year[1]}}
+				aside#visitors-2.widget.widget-visitors
+					h3.widget-title= "Visitors"
+					ul.ds-recent-visitors
+	ul#plugin
+		li#search-container.plgin-item
+			span(style=" width: 100%; height: 100%;position: relative;")
+				a#search.search-btn(target="_blank",title="搜索")
+					span
+						i.icon-search
+					span
+						i.icon-search
+		li.plgin-item
+			span(style=" width: 100%; height: 100%;position: relative;")
+				a#sidebar
+					span
+						i.icon-menu(title="菜单")
+					span
+						i.icon-menu(title="菜单")
+		if true
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a#light(title="添酒回灯")
+						span
+							i.icon-lightbulb
+						span
+							i.icon-lightbulb
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a#wt(title="大象无形")
+						span
+							i.icon-cloud-sun
+						span
+							i.icon-cloud-sun
+				#plg-ctx2(style=" position: fixed; margin: -30px 40px; display: none;width:420px;")
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a#fm(title="歌舞升平")
+						span
+							i.icon-music-outline
+						span
+							i.icon-music-outline
+				#plg-ctx0(style=" position: fixed; margin: -70px 40px; display: none;width:400px;")
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a#ft(title="浮光掠影")
+						span
+							i.icon-camera-outline
+						span
+							i.icon-camera-outline
+				#plg-ctx3(style=" position: fixed; width: 300px; margin: -90px 40px;")
+		if site._id == 'dropbox-168931296-xander'
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a#drop(title="推荐文章")
+						span
+							i.icon-quote
+						span
+							i.icon-quote
+				#dropinfo(style="font-size: 13px;position: fixed; margin: -30px 0px 0px 40px; width: 160px;text-align: center;border: 2px dotted #ccc;background-color: #ddd;padding: 20px;border-radius: 10px;color: #bbb;text-shadow: 0 1px 1px #FFF;display:none;")= "拖放链接或选中的文章内容至此推荐文章"
+			if request.is_admin
+				li.plgin-item
+					span(style=" width: 100%; height: 100%;position: relative;")
+						a#ntfy(href="javascript:popNotifications();",title="欢迎来访")
+							span
+								i.icon-bell
+							span
+								i.icon-bell
+					script
+						function popNotifications() {
+								var myNotifications = window.webkitNotifications;
+								var icn = "/_image/favicon.ico";
+								var title = "Welcome";
+								var msg = "Have a nice day here.";
+								if(myNotifications.checkPermission() === 1) {
+									myNotifications.requestPermission();
+								} else if (myNotifications.checkPermission() === 0) {
+									var notification = myNotifications.createNotification(icn,title,msg);
+									notification.ondisplay = function() { setTimeout(function() { notification.cancel(); }, 5000); }
+									notification.replaceId = 0;
+									notification.show();
+								} else if (window.Notification){
+									if(Notification.permission==='granted'){
+										var notification = new Notification(title,{body:msg, icon:icn, tag:0});
+										setTimeout(function() {notification.close();}, 5000);
+									}else {
+										Notification.requestPermission();
+									}
+								}else {
+									alert('Permission has been denied.');
+							}
+						}
+				li.plgin-item
+					span(style=" width: 100%; height: 100%;position: relative;")
+						a(href="/lab",target="_blank",title="自得其乐")
+							span
+								i.icon-flask
+							span
+								i.icon-flask
+				li.plgin-item
+					span(style=" width: 100%; height: 100%;position: relative;")
+						a(href="/admin/code",target="_blank",title="精雕细琢")
+							span
+								i.icon-code
+							span
+								i.icon-code
+		if request.is_admin
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a(href="/admin/editor",target="_blank",title="妙手偶得")
+						span
+							i.icon-edit
+						span
+							i.icon-edit
+			li.plgin-item
+				span(style=" width: 100%; height: 100%;position: relative;")
+					a(href="/admin",target="_blank",title="运筹帷幄")
+						span
+							i.icon-cog-outline
+						span
+							i.icon-cog-outline
+script
+	function dosearch(){
+		jQuery('#for_search').attr('href', '{{request.url_root}}?s='+jQuery("[name='s']").val());
+		jQuery('#for_search').click();
+		jQuery('.action.search').toggleClass('active');
+		return false;
+	}
+
+.action.search
+	form#search-form.action.searchform(onsubmit="return dosearch();")
+		input.search-query(type="text",name="s",placeholder="Search",style=" height: 30px; border: none; color: #aaa; background-color: #222; float: left;margin:0;")
+		if site._id == 'dropbox-168931296-xander'
+			a#start_button(style="display: none;background-color: #333;cursor: pointer;border: none;color: #555;font-size: 20px; line-height: 36px;")
+				i.icon-mic(style="text-shadow: none;")

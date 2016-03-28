@@ -1,0 +1,67 @@
+mixin fn_article(_title='', stamp='standard', url='#')
+	article(class='entry group format-{{stamp}}',id="{{_title|replace(' ', '-')}}")
+		h1
+			a(href=url,title=_title)= _title
+		.entry-contain
+			.entry-content
+				+caller
+			.entry-meta
+				a(rel='license',href='http://creativecommons.org/licenses/by-nc-nd/3.0/cn/',title='CC:BY-NC-ND',class='cc',target='_BLANK')
+					i.icon-cc-by
+					i.icon-cc-nc
+					i.icon-cc-nd
+
+mixin fn_post(post, covermode='normal')
+	article.entry
+		if post.cover
+			if covermode=='summary'
+				.cover(style='background-image: url({{post.cover}});')
+				h1.covered-h
+					a(href=post.url, title=post.title)= post.title
+					time.entry-date(datetime=post.date.format('%b %d, %Y'))= post.date.format('%Y-%m-%d %a')
+			else
+				h1
+					a(href=post.url, title=post.title)= post.title
+					time.entry-date(datetime=post.date.format('%b %d, %Y'))= post.date.format('%Y-%m-%d %a')
+				.entry-contain
+					.entry-content
+						+caller
+					.entry-meta
+						a(rel='license',href='http://creativecommons.org/licenses/by-nc-nd/3.0/cn/', title='CC:BY-NC-ND', class='cc',target='_BLANK')
+							i.icon-cc-by
+							i.icon-cc-nc
+							i.icon-cc-nd
+						a(class='entry-comments', href='{{post.url}}#comment')
+							post.visits
+							i.icon-book
+		else
+				h1
+					a(href=post.url, title=post.title)= post.title
+					time.entry-date(datetime=post.date.format('%b-%d-%Y'))= post.date.format('%Y-%m-%d %a')
+				.entry-contain
+					.entry-content
+						+caller
+					.entry-meta
+						a(rel='license',href='http://creativecommons.org/licenses/by-nc-nd/3.0/cn/', title='CC:BY-NC-ND', class='cc',target='_BLANK')
+							i.icon-cc-by
+							i.icon-cc-nc
+							i.icon-cc-nd
+						a(class='entry-comments', href='{{post.url}}#comment')
+							post.visits
+							i.icon-book
+
+mixin fn_album(_title='', url='#')
+	article.format-album.entry
+		.entry-contain
+			.entry-content
+				+caller
+			h1
+				a(href=url,title=_title)= _title
+
+mixin fn_polaroid(_title='', url='#')
+	article.format-polaroid.entry
+		.entry-contain
+			.entry-content
+				+caller
+			h1
+				a(href=url,title=_title)= _title

@@ -1,0 +1,154 @@
+extends buzheng/layout/base.jade
+{% from 'buzheng/layout/article.jade' import fn_article %}
+
+block title
+	{{"SFACE-"~site.title }}
+
+block content
+	+fn_article('FAXE')
+		div(style=" width: 300px; margin: auto; ")
+			section#snaper.left
+				style.
+					.myButton {
+						background-color:#7cc576;
+						-moz-border-radius:18px;
+						-webkit-border-radius:18px;
+						border-radius:18px;
+						display:inline-block;
+						cursor:pointer;
+						color:#ffffff;
+						font-family:arial;
+						font-size:25px;
+						font-weight:bold;
+						padding:6px 6px;
+						text-decoration:none;
+					}
+					.myButton:hover {
+						background-color:#68a54b;
+						color:#ffffff;
+					}
+					.myButton:active {
+						position:relative;
+						top:1px;
+					}
+				video#video(width="300",height="225",style='display:none;')
+				canvas#canvas(width="300",height="225")
+				a#snap.myButton(style="margin: 0px 120px 8px;text-shadow:none;")
+					i.icon-aperture
+				#response
+				if(request.args.exp=='ps')
+					script.
+						var saveImage = false;
+				else
+					script.
+						var saveImage = true;
+				script.
+					var user = 'st_faxe';
+					var key = '5be8b85968444e9f91a9bc05244e1b5c';
+					var canvas = document.getElementById("canvas"),
+						context = canvas.getContext("2d"),
+						video = document.getElementById("video"),
+						videoObj = { "video": true },
+						errBack = function(error) {
+							console.log("Video capture error: ", error.code); 
+						};
+					var imgFlush;
+					var ratioWidth = canvas.width/video.width;
+					var ratioHeight = canvas.height/video.height;
+					var ratio = 1;
+					var posX = 0;
+					var posY = 0;
+					if(ratioWidth > ratioHeight)
+					{
+						ratio = 1/ratioHeight;
+						posX = (canvas.width-(video.width/ratio))/2;
+					}else{
+						ratio = 1/ratioWidth;
+						posY = (canvas.height-(video.height/ratio))/2;
+					}
+					if(navigator.getUserMedia) {
+						navigator.getUserMedia(videoObj, function(stream) {
+							video.src = stream;
+							video.play();
+						}, errBack);
+					} else if(navigator.webkitGetUserMedia) {
+						navigator.webkitGetUserMedia(videoObj, function(stream){
+							video.src = window.webkitURL.createObjectURL(stream);
+							video.play();
+							startDraw();
+						}, errBack);
+					}
+					function startDraw(){
+						imgFlush = setInterval('canvas.getContext("2d").drawImage(video, '+posX+', '+posY+', '+video.width/ratio+', '+video.height/ratio+');',50);
+					}
+					function pauseDraw(timeout){
+						clearInterval(imgFlush);
+						setTimeout(function(){startDraw();},timeout);
+					}
+					function stopDraw(){
+						clearInterval(imgFlush);
+					}
+					function procImage(canvas){
+						var ctx = canvas.getContext("2d")
+						var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+						for (var i=0;i<imgData.data.length;i+=4)
+						{
+							imgData.data[i]=255-imgData.data[i];
+							imgData.data[i+1]=255-imgData.data[i+1];
+							imgData.data[i+2]=255-imgData.data[i+2];
+							imgData.data[i+3]=255;
+						}
+						ctx.putImageData(imgData,0,0);
+					}
+					jQuery.ajax({
+						url: 'https://api.sensetime.com/v1/fetch_url',
+						//dataType: 'jsonp',
+						crossDomain: true,
+						data: {
+							api_user:user,
+							api_key:key,
+							url:'http://img0.bdstatic.com/img/image/6446027056db8afa73b23eaf953dadde1410240902.jpg'
+							},
+						method: 'POST',
+						error: function(xhr) {
+							var response;
+							if ((response = xhr.responseText)) {
+								alert(response);
+							}
+						},
+						success: function(data) {
+							alert(data);
+						}
+					});
+					document.getElementById("snap").addEventListener("click", function() {
+						if(saveImage){
+							pauseDraw(1400);
+							jQuery.post('/service/gateway/sync_3rd',
+									{
+										ext_3rd: 'png',
+										base64: canvas.toDataURL("image/png")
+									});
+							setTimeout(function(){procImage(canvas);},100);
+						}else{
+							stopDraw();
+							jQuery.post('/service/gateway/sync_3rd',
+									{
+										ext_3rd: 'png',
+										base64: canvas.toDataURL("image/png")
+									});
+							canvas.toBlob(
+								function (blob) {
+									$.post("https://api.matrixcv.com/v1/fetch_url",
+									{
+										api_user:user,
+										api_key:key,
+										url:'http://img0.bdstatic.com/img/image/6446027056db8afa73b23eaf953dadde1410240902.jpg'
+									},
+									function(data,status){
+										alert("Data: " + data + "\nStatus: " + status);
+									});
+								},
+								'image/jpeg'
+							);
+						}
+					});

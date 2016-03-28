@@ -1,0 +1,43 @@
+doctype html
+html(lang="zh-CN")
+	head
+		meta(http-equiv="Content-Type",content="text/html; charset=UTF-8")
+		<title>{% block title %}{{ site.title }}{% endblock %}</title>
+		meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+		meta(name="author",content="{{site.configs['site_author']}}")
+		if account.uid == '168931296'
+			link#favicon(href="data:image;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AER3zABmZlUAmbv/ADNViABVqv8AiJnMAGaImQDM3f8AVWZ3AESI7gB3qu4AM3eqAJm73QBmiLsAqszuAHd3ZgBVd6oAu8z/ADNEdwAiVZkAiKr/AERmiACIu+4AZnd3ADNmuwBVme4AVXeIAIiq3QBEZqoAd5m7AHeIqgDM7v8Au93/AFVmVQCqzP8AVWZmADNVmQCIu/8AZndmAJmq/wCZu+4Ad6r/AESZ7gAzd7sAVaruAGZ3iABmqu4ARHeqAFV3mQBmme4AZneZAESIzACIqswAZoiqAHeZzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjCiAgHCURAAAAAAAAACM3ECIQNiIkBxkAAAAAAAMfFikiCSIiBBYqKAAAACM0JAQPIhMTIgcqJB8ZAAAvJCQkFyQkJCQyHSQkOAAACh8dJCQiIiIiIiQkNwgAAAAUMyQiIgkhIiIkBBUAAAAABTMkIiIiCSIiJAQaAAAAABUMHQ4iIiIiEAckAgAAAAAmGCQkJCQkJCQkJAIAAAAANwwkBAwwKyckJAQeAAAAAAAxCywNLgYGGzA1AAAAAAAAADcNLQYGLjUxAAAAAAAAAAAAADEuLjcAAAAAAAAAAAAAAAAAEg0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAPAADgBwAAwAMAAIABAACAAQAAgAEAAMADAADAAwAAwAMAAMADAADAAwAA4AcAAPAPAAD8PwAA/n8AAP//AAA=",rel="icon",type="image/x-icon")
+		link(href="/feed",type="application/rss+xml",rel="alternate",title="Sitewide RSS Feed")
+		if request.args.theme
+			link#style_sheet(rel="stylesheet",href="/t/molly/css/style-{{request.args['theme']}}.css")
+		else 
+			load("/t/molly/css/style.sass")
+		load("/t/molly/css/",["fontello-codes.css","flexslider.css","jquery.fancybox.css","flexnav.css"])
+		load("/t/common/jquery.js")
+		if not request.is_admin
+			load("/t/common/encrypt.min.js")
+		load("/t/common/",["jquery.pjax.js","jquery.flexnav.min.js","jquery.cookie.js","jquery.flexslider-min.js","jquery.fitvids.js","jquery.fancybox.pack.js","favico-0.3.4.min.js","to-markdown.js","douban_api.js"])
+		load("/t/molly/scripts/ci_scripts.js")
+		script
+			var no_reload_for_posts = true;
+			var user_id = "{{account_id}}";
+		if site.configs.duoshuo
+			script.
+				var duoshuoQuery = {short_name:"{{site.configs.duoshuo}}"};
+			script(type="text/javascript",async="",src="http://static.duoshuo.com/embed.js",charset="UTF-8")
+		if site.configs.jiathis
+			script.
+				var jiathisQuery = "{{site.configs['jiathis']}}";
+	body
+		include molly/layout/-sidebar.jade
+		#main
+			#page
+				include molly/layout/-header.jade
+				#loading(style="display:none;")
+					i.icon-cog-outline.animate-spin
+				#pjax
+					#widget
+						{% block widget %}{% endblock %}
+	
+					{% block content %}{% endblock %}
+				include molly/layout/-footer.jade

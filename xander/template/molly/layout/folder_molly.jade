@@ -1,0 +1,16 @@
+if account.uid == '168931296'
+	extends buzheng/layout/base.jade
+else
+	extends molly/layout/-molly_base.jade
+
+block title
+	{{"Album-"~site.title}}
+
+block widget
+	img(src="/t/molly/css/img/camera.png",style="position:fixed;bottom:0;right:0;z-index:99",alt="")
+
+block content
+	if account.uid == '168931296'
+		include buzheng/layout/files_list.jade
+	else
+		include molly/layout/-files_list.jade

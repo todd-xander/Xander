@@ -1,0 +1,204 @@
+.flexnav {
+  *zoom: 1;
+  display: none;
+  overflow: hidden;
+  text-align: center;
+  width: 70%;
+  height: 40px;
+  margin: 0 15%;
+  position: fixed;
+  z-index: 999;
+  max-width: 980px;}
+  .flexnav:after {
+    content: "";
+    display: table;
+    clear: both; }
+  .flexnav.show {
+    max-height: 2000px;}
+  .flexnav.one-page {
+    position: fixed;
+    top: 50px;
+    right: 5%;
+    max-width: 200px; }
+  .flexnav li {
+    font-size: 100%;
+    position: relative;
+    overflow: hidden; 
+    display: inline-block;}
+  .flexnav li.dummy{
+    display:none; }
+  .flexnav li a {
+    position: relative;
+    display: block;
+    padding: 8px 25px;
+    z-index: 2;
+    overflow: hidden;}
+  .flexnav li ul {
+    width: 100%; }
+    .flexnav li ul li {
+      font-size: 100%;
+      position: relative;
+      overflow: hidden; }
+  .flexnav li ul.show li {
+    overflow: visible; }
+  .flexnav li ul li a {
+    display: block;
+    background: #b2b2af; }
+  .flexnav ul li ul li a {
+    background: #bfbfbc; }
+  .flexnav ul li ul li ul li a {
+    background: #cbcbc9; }
+
+.menu-info{display:none;}
+
+.menu-button {
+  display: block;
+  z-index: 999;
+  position: fixed;
+  width: 800px;
+  max-width: 100%;
+  height: 40px;
+  background: #111;
+  color: #222222;
+  cursor: pointer;
+  }
+  .menu-button.one-page {
+    position: fixed;
+    top: 0;
+    right: 5%;
+    padding-right: 45px; }
+  .menu-button .drawer-button, .menu-button .home-button {
+    background: transparent;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    width: 50px;
+    height: 40px;
+    display: inline-block;
+    text-align: center; }
+  .menu-button .home-button {
+    right: 0;}
+  .menu-button .drawer-button {
+    left: 0;}
+  .menu-button .drawer-button .navicon, .menu-button .home-button .navicon {
+    font-size: 24px;
+    position: relative;
+    top: 0.3em;
+    color: #aaa;}
+
+@media all and (min-width: 501px) {
+	.menu-info{display: inline-block;margin: 0 5px;}
+}
+@media all and (min-width: 801px) {
+  body.one-page {
+    padding-top: 70px; }
+
+  .flexnav {
+    display: block;
+    overflow: visible; 
+    position:initial;
+    margin: 0;
+    width: 100%;
+    max-height: 100%; }
+    .flexnav.one-page {
+      top: 0;
+      right: auto;
+      max-width: 1080px; }
+    .flexnav li {
+      position: relative;
+      list-style: none;
+      overflow: visible;
+      display: inline-block;
+      margin: 0 30px; }
+    .flexnav li.dummy{
+      display:block; 
+      width:29%}
+    .flexnav li.dummy a{
+       border: dotted 3px;
+       margin: 0;
+       padding: 0;
+       margin-top: 25px;
+       border-radius: 6px;}
+    .flexnav li a:hover {
+      color: #222;}
+    .flexnav li > ul {
+      position: absolute;
+      top: auto;
+      left: 0;
+      display: block; }
+      .flexnav li > ul li {
+        width: 100%; }
+    .flexnav li ul li > ul {
+      margin-left: 100%;
+      top: 0; }
+    .flexnav li ul li a {
+      border-bottom: none; }
+    .flexnav li ul.open {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      z-index: 1; }
+      .flexnav li ul.open li {
+        overflow: visible;
+        max-height: 100px; }
+      .flexnav li ul.open ul.open {
+        margin-left: 100%;
+        top: 0; }
+
+  .menu-button {
+    display: none; } }
+.oldie body.one-page {
+  padding-top: 70px; }
+.oldie .flexnav {
+  overflow: visible; }
+  .oldie .flexnav.one-page {
+    top: 0;
+    right: auto;
+    max-width: 1080px; }
+  .oldie .flexnav li {
+    position: relative;
+    list-style: none;
+    float: left;
+    display: block;
+    background-color: #a6a6a2;
+    width: 20%;
+    min-height: 50px; }
+  .oldie .flexnav li:hover > ul {
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+    display: block;
+    position: absolute; }
+    .oldie .flexnav li:hover > ul li {
+      width: 100%;
+      float: none; }
+  .oldie .flexnav li a {
+    border-left: 1px solid #acaca1;
+    border-bottom: none; }
+  .oldie .flexnav li > ul {
+    position: absolute;
+    top: auto;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    height: 1px;
+    z-index: 1; }
+  .oldie .flexnav li ul li ul {
+    top: 0; }
+  .oldie .flexnav li ul li a {
+    border-bottom: none; }
+  .oldie .flexnav li ul.open {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    height: auto; }
+    .oldie .flexnav li ul.open ul.open {
+      margin-left: 100%;
+      top: 0; }
+  .oldie .flexnav ul li:hover ul {
+    margin-left: 100%;
+    top: 0; }
+.oldie .menu-button {
+  display: none; }
+.oldie.ie7 .flexnav li {
+  width: 19.9%; }

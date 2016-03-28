@@ -1,0 +1,337 @@
+if account.uid == '168931296'
+	extends buzheng/layout/base.jade
+	{% from 'buzheng/layout/article.jade' import fn_article %}
+else
+	extends molly/layout/-molly_base.jade
+	{% from 'molly/layout/-article.jade' import fn_article %}
+
+block title
+	{{"Lab-"~site.title }}
+
+block widget
+	#cofe
+		#steam
+
+block content
+	script(src="/t/common/douban_api.js")
+	if((not request.args.exp) or request.args.exp=='doubanfav')
+		+fn_article('豆瓣红心', 'flask','lab?exp=doubanfav')
+			ol#FavSongsList
+			audio#audioplayer
+			//iframe#songURL(src='http://music.douban.com/j/songlist/get_song_url?sid=670276&ssid=c1fc&alt=xd&callback=?')
+			style
+				#FavSongsList {margin:0;box-shadow: 0 5px 8px #666;}
+				#FavSongsList li{height:60px;font-size: 13px;background: #eee;list-style: none;padding: 20px;background-image: -webkit-linear-gradient(hsla(0,0%,0%,.025), hsla(0,0%,100%,.05));background-image: -moz-linear-gradient(hsla(0,0%,0%,.025), hsla(0,0%,100%,.05));background-image: -o-linear-gradient(hsla(0,0%,0%,.025), hsla(0,0%,100%,.05));}
+				#FavSongsList li span{float:right;}
+				#FavSongsList li .playing{-moz-animation: spin 6s infinite linear;-o-animation: spin 6s infinite linear;-webkit-animation: spin 6s infinite linear;animation: spin 6s infinite linear;display: inline-block;}
+				#FavSongsList li div{ height: 10px; width: 1px; margin-left:70px; background-color: #ddd; }
+				#FavSongsList li .dwnld{ height: 2px; background-color: #bbb; }
+			script
+				var perLoadCnt = 10;
+				var start_index = 0;
+				function getSongUrl(aid,title){
+					$.ajax({
+						url:'http://beancurd.sinaapp.com/?aid='+aid+'&title='+title+'&callback=?',
+						dataType: 'json',
+						type: 'get',
+						data: '',
+						success: function(rData){
+							if(rData.r.length){
+								var song = $("#audioplayer");
+								song.get(0).src = rData.r;
+								song.get(0).load();
+								song.get(0).play();
+							}
+						}
+						}
+					);
+				}
+				function getMoreSong(){
+					$('#getBtn').html('Loading...');
+					DOUBAN.getFavSongs({
+						id:'54261728',
+						apikey:'0f85e9acfb703eb32e91bd06f250bc19',
+						startindex:start_index + 1,
+						maxresults:start_index + perLoadCnt,
+						callback:function(resp){
+							var content = ""
+							start_index += perLoadCnt;
+							$('#getBtn').remove();
+							$.each(resp.entry, function(i,item){
+								var title = item.title.$t;
+								content = content +"<li>"+
+												"<a onclick='audio_play($(this))' class='play' aid='"+item.subject_url.$t.split('/')[4]+"' title='"+item.title.$t+"' style='cursor:pointer;float: left;width: 60px;height: 60px;margin-right: 20px;border-radius: 50%;background-size: cover;background-image: url("+item.cover.$t+")'></a>"+
+												"<strong>"+
+													item.artist.$t+" - <a href='"+item.subject_url.$t+"' target='_blank'>"+item.title.$t+"</a>"+
+												"</strong><div class='prog'></div><div class='dwnld'></div>"+
+												"<span>"+item.album.$t+"</span>"+
+											"</li>"})
+							content = content + "<li id='getBtn' style='height:30px;text-align: center;'><button title='获取更多' onclick='getMoreSong();' style='border: none;width: 100%;background-color: rgba(0,0,0,0);cursor: pointer;'>获取更多</button></li>";
+							$('#FavSongsList').append(content);
+						}
+					});
+				}
+				function audio_play(a){
+					var song = $("#audioplayer");
+					var progbar = a.parent().find(".prog")[0];
+					var downloadbar = a.parent().find(".dwnld")[0];
+					if(a.hasClass('playing')){
+						song.get(0).pause();
+						a.addClass('paused').removeClass('playing');
+						return;
+					}
+					if(a.hasClass('paused')){
+						song.get(0).play();
+						a.addClass('playing').removeClass('paused');
+						return;
+					}
+					var playing_song = $('.playing');
+					if(playing_song.length>0){
+						var item = $('.playing').parent();
+						song.get(0).pause();
+						song.unbind('timeupdate');
+						song.unbind('loadeddata');
+						item.find('.prog')[0].style.width="1px";
+						item.find('.dwnld')[0].style.width="1px";
+						$('.playing').removeClass('playing');
+					}
+					a.addClass('playing');
+					song.bind( 'timeupdate', function()
+						{
+							progbar.style.width = (( song.get(0).currentTime / song.get(0).duration ) * 60 + '%' );
+						});
+					song.bind( 'loadeddata', function()
+						{
+							downloadbar.style.width = ( ( song.get(0).buffered.end( 0 ) / song.get(0).duration ) * 60 + '%' );
+						});
+					getSongUrl(a.attr('aid'),a.attr('title'));
+				}
+				getMoreSong();
+	if((not request.args.exp) or request.args.exp=='doubanfm')
+		+fn_article('豆瓣电台', 'flask','lab?exp=doubanfm')
+			div(style=" width: 400px; margin: auto; ")
+				iframe#doufm(name="doufm",width="400px",height="192px",allowtransparency="true",scrolling="no",frameborder="0",src="http://douban.fm/swf/53074/fmplayer.swf?0.08430445613339543&uid={{site.configs['douban']}}&userType=&autoplay=1&host=http://douban.fm&context=&channel=&defaultChannel=-3&pid=&fromname=mainsite&channels=")
+	if((not request.args.exp) or request.args.exp=='douban')
+		+fn_article('豆瓣广播', 'flask','lab?exp=douban')
+			style.
+				#db_user img{border-radius: 50%;padding: 30px;background-color: #ddd;margin-bottom: -38px;}
+				#db_book div{display:inline-block;}
+				#db_timeline .timeline li img{
+					width: 60px;
+					height: 60px;
+					border-radius: 50%;
+				}
+				#db_timeline .timeline .pull-left img{float: left;margin-right: 20px;}
+				#db_timeline .timeline .pull-right img{float: right;margin-left: 20px;}
+				#db_timeline .timeline .pull-left:first-child{;margin-top: 30px;}
+				.timeline .tl-wrap:first-child + .tl-wrap{margin-top: 70px;}
+				@media all and (max-width:767px){
+				.timeline .tl-wrap:first-child + .tl-wrap {
+					margin-top: 20px;
+					}
+				}
+			#db_user(style="text-align:center;")
+			#db_book
+			#db_timeline
+			script(type="text/javascript",src="t/common/douban_api.js?v=2")
+			script
+				DOUBAN.apikey = '09612a49fbdc9e4a1c237eddf395dade'
+				if(true){
+					DOUBAN.getUser({
+							id:'54261728',
+							callback:function(user){
+								document.getElementById('db_user').innerHTML = "<a href='"+user.alt+"'><image src='"+user.large_avatar+"' title='"+user.name+"的主页'></image></a>";
+							}
+						});
+					DOUBAN.getTimeline({
+						id:'54261728',
+						callback:function(resp){
+							var content = "<ol class='timeline'>"
+							$.each(resp, function(i,item){
+								var pos='right';
+								if(i%2 == 0)
+									pos='left';
+								var title = item.title.replace(/\[score\]\d*\[\/score\]/,'');
+								content = content +"<li class='tl-wrap pull-"+pos+"'>"+
+												"<div style='float: left;width: 60px;height: 60px;margin-right: 20px;border-radius: 50%;background-size: cover;background-image: url("+item.attachments[0].media[0].original_src+")'></div>"+
+												"<strong class='tl-title'>"+
+													title+" <a href='"+item.attachments[0].href+"' target='_blank'>"+item.attachments[0].title+"</a>"+
+												"</strong>"+
+												"<span class='tl-content'>"+item.created_at+"</span>"+
+											"</li>"})
+							content = content + "</ol>"
+							document.getElementById('db_timeline').innerHTML = content;
+						}
+					});
+				}
+	if((not request.args.exp) or request.args.exp=='tianqi')
+		+fn_article('天气预报', 'flask','lab?exp=tianqi')
+			div(style=" width: 410px; margin: auto; ")
+				iframe#forecast(allowtransparency="true",frameborder="0",width="410",height="98",scrolling="no",src="http://tianqi.2345.com/plugin/widget/index.htm?s=1&z=1&t=1&v=0&d=2&k=&f=8&q=1&e=0&a=1&c=54511&w=410&h=98",style="border: solid 5px #7cc576;border-radius: 20px;background-color: #e9fae9;")
+	if((not request.args.exp) or request.args.exp=='poto' or request.args.exp=='ps')
+		+fn_article('偷窥无罪', 'flask','lab?exp=poto')
+			div(style=" width: 300px; margin: auto; ")
+				section#snaper.left
+					style.
+						.myButton {
+							background-color:#7cc576;
+							-moz-border-radius:18px;
+							-webkit-border-radius:18px;
+							border-radius:18px;
+							display:inline-block;
+							cursor:pointer;
+							color:#ffffff;
+							font-family:arial;
+							font-size:25px;
+							font-weight:bold;
+							padding:6px 6px;
+							text-decoration:none;
+						}
+						.myButton:hover {
+							background-color:#68a54b;
+							color:#ffffff;
+						}
+						.myButton:active {
+							position:relative;
+							top:1px;
+						}
+					video#video(width="300",height="225",style='display:none;')
+					canvas#canvas(width="300",height="225")
+					a#snap.myButton(style="margin: 0px 120px 8px;text-shadow:none;")
+						i.icon-aperture
+					#response
+					if(request.args.exp=='ps')
+						script.
+							var saveImage = false;
+					else
+						script.
+							var saveImage = true;
+					script.
+						(function(){var k=function(d,a){return function(){return d.apply(a,arguments)}};this.FacePP=function(){function d(a,b,c){var e,f,g,h,l=this;this.apiKey=a;this.apiSecret=b;null==c&&(c={});this.sessionCheck=k(this.sessionCheck,this);a={apiURL:"https://apicn.faceplusplus.com/v2",sessionInterval:500,requestTimeout:1E4,ajaxAdapter:"FormData"in window?"XMLHttpRequest":"jQuery",concurrency:2};for(e in a)null==c[e]&&(c[e]=a[e]);this.apiURL=c.apiURL.replace(d.RE_TRIM,"");this.sessionInterval=c.sessionInterval;
+						this.requestTimeout=c.requestTimeout;this.requestAdapter=d.adapter[c.ajaxAdapter];0<(g=c.concurrency)&&(f=[],h=function(){var a,b,c,e;0<g&&0<f.length&&(--g,e=f.shift(),a=e[0],c=e[1],b=e[2],d.prototype.request.call(l,a,c,function(a,c){++g;setTimeout(h,0);b(a,c)}))},this.request=function(a,c,b){f.push([a,c,b]);h()})}d.RE_TRIM=/^\/+|\/+$/g;d.prototype.request=function(a,b,c){b.api_key=this.apiKey;b.api_secret=this.apiSecret;a=this.apiURL+"/"+a.replace(d.RE_TRIM,"");this.requestAdapter(a,b,{timeout:this.requestTimeout},
+						c)};d.prototype.sessionCheck=function(a,b){var c=this;this.request("info/get_session",{session_id:a},function(e,f){e?b(e,f):"FAILED"===f.status?b(f.result.error_code||-1,f.result):"INQUEUE"===f.status?setTimeout(c.sessionCheck,c.sessionInterval,a,b):b(null,f.result)})};d.prototype.requestAsync=function(a,b,c){var e=this;b.async="true";this.request(a,b,function(a,b){a?c(a,b):setTimeout(e.sessionCheck,e.sessionInterval,b.session_id,c)})};d.adapter={jQuery:function(a,b,c,e){var f,g;g=0;for(f in b)g+=
+						b[f].length||0;jQuery.ajax({url:a,dataType:"jsonp",crossDomain:!0,data:b,method:1024>g?"GET":"POST",timeout:c.timeout,error:function(a){if(a=a.responseText)try{a=JSON.parse(a)}catch(b){}e((null!=a?a.error_code:void 0)||-1,a)},success:function(a){e(null,a)}})},XMLHttpRequest:function(a,b,c,e){var f,g,d;f=!1;for(g in b)if(b[g]instanceof Blob){f=!0;break}d=new XMLHttpRequest;d.onreadystatechange=function(){var a;if(4===this.readyState){this.onreadystatechange=null;if(a=this.responseText)try{a=JSON.parse(a)}catch(b){}200===
+						this.status?e(null,a):e(a.error_code||-1,a)}};"timeout"in d&&(d.timeout=c.timeout);d.open("POST",a,!0);if(f){a=new FormData;for(g in b)a.append(g,b[g]);d.send(a)}else{d.setRequestHeader("Content-type","application/x-www-form-urlencoded");a=encodeURIComponent;c=[];for(g in b)c.push(""+a(g)+"="+a(b[g]));d.send(c.join("&"))}}};return d}()}).call(this);
+						!function(a){"use strict";var b=a.HTMLCanvasElement&&a.HTMLCanvasElement.prototype,c=a.Blob&&function(){try{return Boolean(new Blob)}catch(a){return!1}}(),d=c&&a.Uint8Array&&function(){try{return 100===new Blob([new Uint8Array(100)]).size}catch(a){return!1}}(),e=a.BlobBuilder||a.WebKitBlobBuilder||a.MozBlobBuilder||a.MSBlobBuilder,f=(c||e)&&a.atob&&a.ArrayBuffer&&a.Uint8Array&&function(a){var b,f,g,h,i,j;for(b=a.split(",")[0].indexOf("base64")>=0?atob(a.split(",")[1]):decodeURIComponent(a.split(",")[1]),f=new ArrayBuffer(b.length),g=new Uint8Array(f),h=0;h<b.length;h+=1)g[h]=b.charCodeAt(h);return i=a.split(",")[0].split(":")[1].split(";")[0],c?new Blob([d?g:f],{type:i}):(j=new e,j.append(f),j.getBlob(i))};a.HTMLCanvasElement&&!b.toBlob&&(b.mozGetAsFile?b.toBlob=function(a,c,d){d&&b.toDataURL&&f?a(f(this.toDataURL(c,d))):a(this.mozGetAsFile("blob",c))}:b.toDataURL&&f&&(b.toBlob=function(a,b,c){a(f(this.toDataURL(b,c)))})),"function"==typeof define&&define.amd?define(function(){return f}):a.dataURLtoBlob=f}(this);
+						var api = new FacePP('bbf25975eada9b04f980a9ad0905f198','Nx1lKNTwDGP5m4DsOvN8wDfUasfzR1lX ');
+						var canvas = document.getElementById("canvas"),
+							context = canvas.getContext("2d"),
+							video = document.getElementById("video"),
+							videoObj = { "video": true },
+							errBack = function(error) {
+								console.log("Video capture error: ", error.code); 
+							};
+						var imgFlush;
+						var ratioWidth = canvas.width/video.width;
+						var ratioHeight = canvas.height/video.height;
+						var ratio = 1;
+						var posX = 0;
+						var posY = 0;
+						if(ratioWidth > ratioHeight)
+						{
+							ratio = 1/ratioHeight;
+							posX = (canvas.width-(video.width/ratio))/2;
+						}else{
+							ratio = 1/ratioWidth;
+							posY = (canvas.height-(video.height/ratio))/2;
+						}
+						if(navigator.getUserMedia) {
+							navigator.getUserMedia(videoObj, function(stream) {
+								video.src = stream;
+								video.play();
+							}, errBack);
+						} else if(navigator.webkitGetUserMedia) {
+							navigator.webkitGetUserMedia(videoObj, function(stream){
+								video.src = window.webkitURL.createObjectURL(stream);
+								video.play();
+								startDraw();
+							}, errBack);
+						}
+						function startDraw(){
+							imgFlush = setInterval('canvas.getContext("2d").drawImage(video, '+posX+', '+posY+', '+video.width/ratio+', '+video.height/ratio+');',50);
+						}
+						function pauseDraw(timeout){
+							clearInterval(imgFlush);
+							setTimeout(function(){startDraw();},timeout);
+						}
+						function stopDraw(){
+							clearInterval(imgFlush);
+						}
+						function procImage(canvas){
+							var ctx = canvas.getContext("2d")
+							var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+							for (var i=0;i<imgData.data.length;i+=4)
+							{
+								imgData.data[i]=255-imgData.data[i];
+								imgData.data[i+1]=255-imgData.data[i+1];
+								imgData.data[i+2]=255-imgData.data[i+2];
+								imgData.data[i+3]=255;
+							}
+							ctx.putImageData(imgData,0,0);
+						}
+						
+						document.getElementById("snap").addEventListener("click", function() {
+							if(saveImage){
+								pauseDraw(1400);
+								jQuery.post('/service/gateway/sync_3rd',
+										{
+											ext_3rd: 'png',
+											base64: canvas.toDataURL("image/png")
+										});
+								setTimeout(function(){procImage(canvas);},100);
+							}else{
+								stopDraw();
+								jQuery.post('/service/gateway/sync_3rd',
+										{
+											ext_3rd: 'png',
+											base64: canvas.toDataURL("image/png")
+										});
+								canvas.toBlob(
+									function (blob) {
+										api.request('detection/detect', {
+											img: blob
+											}, 
+											function(err, result) {
+												if (err) {
+													$('#response').text('载入失败');
+													startDraw();
+													return;
+												}
+												var faceInfo = '';
+												$.each(result.face,function(i,f){
+													var w = Math.ceil(canvas.width*f.position.width/100);
+													var h = Math.ceil(canvas.height*f.position.height/100);
+													var x = Math.ceil((canvas.width*f.position.center.x/100)-(w/2));
+													var y = Math.ceil((canvas.height*f.position.center.y/100)-(h/2));
+													var bg = canvas.toDataURL("image/png");
+													var tmp = "<div style='width:100%;height:"+h+"px;'><div style='width:"+w+"px;height:"+h+"px;background-image:url("+bg+");background-position: -"+x+"px -"+y+"px;float:left;margin-right: 10px;'></div>"+
+													"<div>性别估计："+((f.attribute.gender.value=='Male')?'男':'女')+"</div>"+
+													"<div>年龄估计："+f.attribute.age.value+"±"+f.attribute.age.range+"</div>"+
+													"</div>";
+													faceInfo += tmp;
+												});
+												$('#response').html(faceInfo==''?'未检测到人脸':faceInfo);
+												startDraw();
+											}
+										);
+									},
+									'image/jpeg'
+								);
+							}
+						});
+					
+	if((not request.args.exp) or request.args.exp=='comment')
+		+fn_article('最新评论', 'flask','lab?exp=comment')
+			ul.ds-recent-comments(data-show-title="1")
+			script
+				var duoshuoQuery = {short_name:"{{ site.configs['duoshuo'] }}"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = 'http://static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+	if((not request.args.exp) or request.args.exp=='visitor')
+		+fn_article('最近来访', 'flask','lab?exp=visitor')
+			ul.ds-recent-visitors

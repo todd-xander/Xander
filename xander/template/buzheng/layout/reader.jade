@@ -1,0 +1,116 @@
+extends buzheng/layout/base.jade
+{% from 'buzheng/layout/article.jade' import fn_article %}
+
+block title
+	if((not request.args.rss))
+		{{"Reader-"~site.title }}
+	else
+		{{request.args.title~"-"~site.title }}
+
+block content
+	style
+		.entry img {max-width: 100%; width:auto;height: auto; margin: 0 auto; box-shadow: none;border: none;display: block;}
+	script
+		function time2string(unixTime, isFull, timeZone) {
+			if (typeof (timeZone) == 'number')
+			{
+				unixTime = unixTime + timeZone * 60 * 60;
+			}
+			var time = new Date(unixTime * 1000);
+			var ymdhis = "";
+			ymdhis += time.getUTCFullYear() + "-";
+			ymdhis += (time.getUTCMonth()+1) + "-";
+			ymdhis += time.getUTCDate();
+			if (isFull === true)
+			{
+				ymdhis += " " + time.getUTCHours() + ":";
+				ymdhis += time.getUTCMinutes() + ":";
+				ymdhis += time.getUTCSeconds();
+			}
+			return ymdhis;
+		}
+		// Calls YQL Web service, parses results, and outputs results
+		function getFeed(news_url, idx){
+			jQuery('#status').append("<div id=feed"+idx+">正在从"+news_url+"获取文章...</div>");
+			YUI().use('node', 'event', 'yql', function(Y) {
+				var yql_query = "select title, link, pubDate from rss where url='" + news_url + "'";
+					Y.YQL(yql_query, function(response) {
+						jQuery("#feed"+idx).remove();
+						if(response.query.results){
+							var paras = response.query.results.item;
+							paras.forEach(function(node,index) {
+								$('#resultsTmp').append("<li>"+
+									'<a style="display:block;" href="/reader?' + 'rss='+news_url+'&link='+ encodeURIComponent(node.link)+'&title='+encodeURIComponent(node.title) +'">' + node.title + "</a>"+
+									'<div style="float:right;font-size: 80%;" date="'+Date.parse(node.pubDate)+'">' + time2string(Date.parse(node.pubDate)/1000, true, +8) + '</div>' +
+								"</li>");
+							});
+						}
+						if(jQuery('#status div').length == 0)
+						{
+							$("#resultsTmp li").sort(function(a, b){
+								return parseInt($(a).children("div").attr("date")) < parseInt($(b).children("div").attr("date"))?1:-1;
+								//return $(a).children('a').text().length > $(b).children('a').text().length;
+							}).appendTo("#results");
+							/*while($('#resultsTmp li').length > 0)
+							{
+								var latest = 0;
+								var latestItem;
+								$('#resultsTmp li').each(function(i,e){
+									if(parseInt($(e).children("div").attr("date")) > latest)
+										latest = parseInt($(e).children("div").attr("date"));
+										latestItem = e;
+								});
+								$(latestItem).appendTo("results");
+							}*/
+						}
+					});
+				});
+			}
+	if((not request.args.rss))
+		+fn_article('Xander Reader')
+			#status
+			ol#results
+			ol#resultsTmp
+			style
+				#status {font-size: 80%;color: #ddd;position: fixed;top: 0;right: 0;background-color: rgba(0, 0, 0, 0.36);text-shadow: none;padding: 0 5px;}
+				#results {margin:0;}
+				#results li{font-size: 80%;background: #eee;list-style: none;padding: 20px;background-image: -webkit-linear-gradient(hsla(0,0%,0%,.025), hsla(0,0%,100%,.05));background-image: -moz-linear-gradient(hsla(0,0%,0%,.025), hsla(0,0%,100%,.05));background-image: -o-linear-gradient(hsla(0,0%,0%,.025), hsla(0,0%,100%,.05));}
+			script
+				var feedList = ["http://segmentfault.com/feeds/blogs", "http://cn.engadget.com/rss.xml", "http://www.ifanr.com/feed","http://www.36kr.com/feed"];
+				for(var i=0, length=feedList.length; i<length; i++)
+				{
+					getFeed(feedList[i], i);
+				}
+	else
+		+fn_article()
+			#status
+			ol#results
+			include buzheng/layout/sns.jade
+			style
+				#status {font-size: 80%;color: #ddd;position: fixed;top: 0;right: 0;background-color: rgba(0, 0, 0, 0.36);text-shadow: none;padding: 0 5px;}
+				#results {margin:0;}
+			script
+				// Calls YQL Web service, parses results, and outputs results
+				jQuery('#status').append("<div>正在获取文章...</div>");
+				$(".jiathis_style").hide();
+				YUI().use('node', 'event', 'yql', function(Y) {
+					var query_link = decodeURIComponent("{{request.args.link}}");
+					var yql_query = "select * from rss where url='{{request.args.rss}}' and link='"+query_link+"'";
+					Y.YQL(yql_query, function(response) {
+						jQuery('#status').hide();
+						jQuery('#results').hide();
+						if(response.query.results){
+							var node = response.query.results.item;
+							Y.one('.entry h1').append("<a href='#'>"+node.title+"</a>");
+							Y.one('.entry h1').append("<time class='entry-date'>"+time2string(Date.parse(node.pubDate)/1000, true, +8)+"</time>");
+						 	if(node.encoded)
+								Y.one('#results').append(node.encoded);
+							else
+								Y.one('#results').append(node.description);
+							Y.one("#results").append("<div><a href='"+node.link+"' style='float: right;color: #CF5454;' target=_blank>原文阅读</a></div>");
+						}else{
+							Y.one("#results").append("<div>获取文章失败，点击<a href='"+node.link+"' style='float: right;color: #CF5454;' target=_blank>这里</a>阅读原文。</div>");
+						}
+						jQuery('#results').fadeIn(1000,function(){$(".jiathis_style").show();});
+					});
+				});

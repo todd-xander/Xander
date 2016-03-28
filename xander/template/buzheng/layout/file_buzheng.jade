@@ -1,0 +1,113 @@
+extends buzheng/layout/base.jade
+{% from 'buzheng/layout/article.jade' import fn_article %}
+
+block title
+	{{file.title}}-{{site.title}}
+
+block content
+	style
+		.bread_nav{
+			padding: 10px;
+		}
+		.bread_nav li{display:inline-block;}
+		.bread_nav li a{color: #888;
+			display: block;
+			background: rgba(0,0,0,0.1);
+			text-decoration: none;
+			position: relative;
+			height: 40px;
+			line-height: 40px;
+			padding: 0 10px 0 5px;
+			text-align: center;
+			margin-right: 23px;}
+		.bread_nav li:first-child a{
+			padding-left: 15px;
+			-webkit-border-radius: 4px 0 0 4px;
+			-moz-border-radius: 4px 0 0 4px;
+			-ms-border-radius: 4px 0 0 4px;
+			-o-border-radius: 4px 0 0 4px;
+			border-radius: 4px 0 0 4px;
+		}
+		.bread_nav li a:before, .bread_nav li a:after {
+			content: "";
+			position: absolute;
+			top: 0;
+			border: 0 solid rgba(0,0,0,0.1);
+			border-width: 20px 10px;
+			width: 0;
+			height: 0;
+		}
+		.bread_nav li:first-child a:before {
+			border: none;
+		}
+		.bread_nav li a:before {
+			left: -20px;
+			border-left-color: transparent;
+		}
+		.bread_nav li a:after {
+			left: 100%;
+			border-color: transparent;
+			border-left-color: rgba(0,0,0,0.1);
+		}
+		.entry {
+			padding-top: 0px;
+		}
+		.entry h1 {display: none;}
+		@media screen and (max-width: 800px) {
+			.bread_nav li a{
+				font-size: 80%;
+				height: 20px;
+				line-height: 20px;
+			}
+			.bread_nav li a:before, .bread_nav li a:after {
+				border-width: 10px 10px;
+			}
+		}
+	{{ bread_nav(get_request_path(offset=2),'/folder/'~site.configs.file_path, prefix_name='相册', split_by='') }}
+	+fn_article(file.title, 'image', '#')
+		.entry-thumb
+			img(src=file.url,alt=file.title)
+		if file.exif.model
+			p(style="display:inline;")
+				code
+					i.icon-camera
+					{{file.exif.model}}
+		if file.exif.focal_length
+			p(style="display:inline;")
+				code
+					i.icon-target
+					{{file.exif.focal_length~"mm"}}
+		if file.exif.fn 
+			p(style="display:inline;")
+				code
+					i.icon-aperture
+					{{"f/"~file.exif.fn}}
+		if file.exif.exposure
+			p(style="display:inline;")
+				code
+					i.icon-stopwatch
+					{{file.exif.exposure~"s"}}
+		if file.exif.iso
+			p(style="display:inline;")
+				code
+					i.icon-info-circle
+					{{file.exif.iso}}
+		if file.exif.datetime
+			p(style="display:inline;")
+				code
+					i.icon-calendar= file.exif.datetime
+
+		include buzheng/layout/sns.jade
+
+	#paging.navigation.group
+		.unit-inner.unit-foot-inner
+			nav.pager
+				if pre_one
+					a.internal.prev(href="/file/{{ pre_one.path }}", title="View {{ pre_one.title }}")
+						i.icon-left-open
+						pre_one.title
+				if next_one
+					a.internal.next(href="/file/{{ next_one.path }}", title="View {{ next_one.title }}")
+						next_one.title
+						i.icon-right-open
+	include common/comments.html

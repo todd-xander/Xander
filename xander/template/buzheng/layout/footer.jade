@@ -1,0 +1,46 @@
+#footer
+	aside#ci_social_widget-2.widget.widget_ci_social_widget.group
+		.powered_by
+			a(href="http://www.farbox.com",target="_blank")
+				span.footer_text= "Powered By "
+				i.icon-heart 
+				span= " FarBox.com"
+			a |
+			a(href="http://xander.farbox.com",target="_blank")
+				span.footer_text= "Designed by "
+				i.icon-flask 
+				span= " Xander"
+		a.icn(href="/feed",title="Subcribe to my RSS feed.",target="_blank")
+			span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+				i.icon-circle(style="font-size: 30px;")
+				i.icon-rss(style="font-size: 14px;color: #e8e8e8;margin: 0 auto;width: 30px;")
+		if site.configs.github
+			a.icn(href="http://github.com/{{site.configs.github}}/",title="Follows me on github.",target="_blank")
+				span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+					i.icon-circle(style="font-size: 30px;")
+					i.icon-github(style="font-size: 14px;color: #e8e8e8;margin: 0 auto;width: 30px;")
+		if site.configs.gplus
+			a.icn(href="https://plus.google.com/site.configs.gplus}}/",title="Follows me on gplus.",target="_blank")
+				span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+					i.icon-circle(style="font-size: 30px;")
+					i.icon-gplus(style="font-size: 14px;color: #e8e8e8;margin: 0 auto;width: 30px;")
+		if site.configs.douban
+			a.icn(href="http://www.douban.com/people/{{site.configs.douban}}/",rel="publisher",title="Follows me on douban.",target="_blank")
+				span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+					i.icon-circle(style="font-size: 30px;")
+					i(style="font-size: 14px;font-style: normal;font-weight: bold;margin-left: -7px;color: #e8e8e8;position: absolute;")= "豆"
+		if site.configs.twitter
+			a.icn(href="http://twitter.com/{{site.configs.twitter}}/",title="Follows me on twitter.",target="_blank")
+				span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+					i.icon-circle(style="font-size: 30px;")
+					i.icon-twitter(style="font-size: 14px;color: #e8e8e8;margin: 0 auto;width: 30px;")
+		if site.configs.weibo
+			a.icn(href="http://weibo.com/{{site.configs.weibo}}/",title="Follows me on WeiBo.",target="_blank")
+				span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+					i.icon-circle(style="font-size: 30px;")
+					i.icon-weibo(style="font-size: 14px;color: #e8e8e8;margin: 0 auto;width: 30px;")
+		if site.configs.email
+			a.icn(href="mailto:{{site.configs.email}}",title="Email to me.",target="_blank")
+				span.icon-stack(style="line-height: 30px;width: 30px;height: 30px;")
+					i.icon-circle(style="font-size: 30px;")
+					i.icon-email(style="font-size: 14px;color: #e8e8e8;margin: 0 auto;width: 30px;")

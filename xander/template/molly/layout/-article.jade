@@ -1,0 +1,85 @@
+mixin fn_article(_title, stamp='standard', url='#')
+	article(class='entry group format-{{stamp}}',id="{{_title|replace(' ', '-')}}")
+		a(class='post-format-icon post-format-{{ stamp }}',href='#')
+			span.icon-stack
+				i.icon-certificate
+				i(style='margin-left:22%;',class='icon-light icon-{{stamp}}')
+		h1
+			a(href=url,title=_title)= _title
+		.entry-contain
+			.entry-content
+				+caller
+			.entry-meta
+				a(rel='license',href='http://creativecommons.org/licenses/by-nc-nd/3.0/cn/',title='CC:BY-NC-ND',class='cc',target='_BLANK')
+					i.icon-cc-by
+					i.icon-cc-nc
+					i.icon-cc-nd
+
+mixin fn_post(post, covermode='normal')
+	article(class='format-{{ post.metadata.stamp }} entry')
+		if post.metadata.stamp and post.metadata.stamp != "tui"
+			a(href='/category#{{ post.metadata.stamp }}-ref',class='post-format-icon post-format-{{ post.metadata.stamp }}')
+				span.icon-stack
+					i.icon-certificate
+					i(class='icon-{{ post.metadata.stamp }} icon-light',style='margin-left:22%;')
+		else if post.metadata.stamp != "tui"
+			a(href='/category',class='robin')
+		if post.cover
+			if covermode=='summary'
+				.cover(style='background-image: url({{post.cover}});')
+				h1.covered-h
+					a(href=post.url, title=post.title)= post.title
+					time.entry-date(datetime=post.date)= post.date
+			else
+				h1
+					a(href=post.url, title=post.title)= post.title
+					time.entry-date(datetime=post.date)= post.date
+				.entry-contain
+					.entry-content
+						+caller
+					.entry-meta
+						a(rel='license',href='http://creativecommons.org/licenses/by-nc-nd/3.0/cn/', title='CC:BY-NC-ND', class='cc',target='_BLANK')
+							i.icon-cc-by
+							i.icon-cc-nc
+							i.icon-cc-nd
+						a(class='entry-comments', href='{{post.url}}#comment')
+							post.visits
+							i.icon-book
+		else
+			if post.metadata.stamp != "tui"
+				h1
+					a(href=post.url, title=post.title)= post.title
+					time.entry-date(datetime=post.date)= post.date
+			else
+				h1(style="text-align: left;")
+					i.icon-shareable(style="float: left;")
+					+caller
+					time.entry-date(datetime=post.date,style="text-align: right;padding-bottom: 35px;")= post.date
+			if post.metadata.stamp != "tui"
+				.entry-contain
+					.entry-content
+						+caller
+					.entry-meta
+						a(rel='license',href='http://creativecommons.org/licenses/by-nc-nd/3.0/cn/', title='CC:BY-NC-ND', class='cc',target='_BLANK')
+							i.icon-cc-by
+							i.icon-cc-nc
+							i.icon-cc-nd
+						a(class='entry-comments', href='{{post.url}}#comment')
+							post.visits
+							i.icon-book
+
+mixin fn_album(_title, url='#')
+	article.format-album
+		.entry-contain
+			.entry-content
+				+caller
+			h1
+				a(href=url,title=_title)= _title
+
+mixin fn_polaroid(_title, url='#')
+	article.format-polaroid
+		.entry-contain
+			.entry-content
+				+caller
+			h1
+				a(href=url,title=_title)= _title

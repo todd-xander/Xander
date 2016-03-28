@@ -1,0 +1,96 @@
+if site.configs.jiathis
+	.jiathis_style(style="padding: 30px 0px 0px 0px;")
+		span.jiathis_txt= '分享到:'
+		a.jiathis_button_tsina
+		a.jiathis_button_tqq
+		a.jiathis_button_ydnote
+		a.jiathis_button_renren
+		a.jiathis_button_weixin
+		a.jiathis.jiathis_txt.jiathis_separator.jtico.jtico_jiathis(href="http://www.jiathis.com/share?uid=1762890", target="_blank")
+	.ds-share(style="display:none", data-thread-key="此处请替换为当前文章的thread-key", data-title="此处请替换为分享时显示的标题", data-images="此处请替换为分享时显示的图片的链接地址", data-content="此处请替换为分享时显示的内容", data-url="此处请替换为分享时显示的链接地址")
+		.ds-share-inline
+			.ds-share-icons-16
+				li(data-toggle="ds-share-icons-more")
+					a.ds-more(href="javascript:void(0);") 分享到：
+				li
+					a.ds-weibo(href="http://jiatingri.duoshuo.com/share-proxy/?service=qzone&thread_id=xander-forbox", data-service="weibo") 新浪微博
+				li
+					a.ds-qzone(href="javascript:void(0);", data-service="qzone") QQ空间
+				li
+					a.ds-sohu(href="javascript:void(0);", data-service="sohu") 搜狐微博
+				li
+					a.ds-renren(href="javascript:void(0);", data-service="renren") 人人网
+				li
+					a.ds-netease(href="javascript:void(0);", data-service="netease") 网易微博
+				li
+					a.ds-qqt(href="javascript:void(0);", data-service="qqt") 腾讯微博
+				li
+					a.ds-kaixin(href="javascript:void(0);", data-service="kaixin") 开心网
+				li
+					a.ds-douban(href="javascript:void(0);", data-service="douban") 豆瓣网
+				li
+					a.ds-qq(href="javascript:void(0);", data-service="qq") QQ
+				li
+					a.ds-meilishuo(href="javascript:void(0);", data-service="meilishuo") 美丽说
+				li
+					a.ds-mogujie(href="javascript:void(0);", data-service="mogujie") 蘑菇街
+				li
+					a.ds-baidu(href="javascript:void(0);", data-service="baidu") 百度
+				li
+					a.ds-taobao(href="javascript:void(0);", data-service="taobao") 淘宝
+				li
+					a.ds-google(href="javascript:void(0);", data-service="google") 谷歌
+				li
+					a.ds-wechat(href="javascript:void(0);", data-service="wechat") 微信
+				li
+					a.ds-diandian(href="javascript:void(0);", data-service="diandian") 点点网
+				li
+					a.ds-huaban(href="javascript:void(0);", data-service="huaban") 花瓣网
+				li
+					a.ds-duitang(href="javascript:void(0);", data-service="duitang") 堆糖
+				li
+					a.ds-youdao(href="javascript:void(0);", data-service="youdao") 有道云笔记
+				li
+					a.ds-pengyou(href="javascript:void(0);", data-service="pengyou") 朋友网
+				li
+					a.ds-facebook(href="javascript:void(0);", data-service="facebook") Facebook
+				li
+					a.ds-twitter(href="javascript:void(0);", data-service="twitter") Twitter
+				li
+					a.ds-linkedin(href="javascript:void(0);", data-service="linkedin") Linkedin
+				li
+					a.ds-msn(href="javascript:void(0);", data-service="msn") MSN
+
+	script(type="text/javascript",defer="defer")
+		var jiathis_config={
+			data_track_clickback:true,
+			siteNum:6,
+			sm:"qzone,tsohu,kaixin001,douban,t163,googleplus",
+			summary:"",
+			boldNum:0,
+			ralateuid:{
+				"tsina":"{{site.configs['weibo']}}"
+			},
+			hideMore:false
+		}
+
+	script(defer="defer",type="text/javascript",src="http://v3.jiathis.com/code_mini/jia.js?uid=1762890",charset="utf-8")
+	style.
+		.jiathis_style .jtico{height:18px !important; padding:0px 5px 0px 5px !important; background-image:none !important;}
+		.jtico_tsina:before{content: '\e815';font-family: "fontello";}
+		.jtico_tsina:hover{color: rgb(230,22,45);}
+		.jtico_tqq:before{content: '\e803';font-family: "fontello";}
+		.jtico_tqq:hover{color: rgb(90,180,255);}
+		.jtico_ydnote:before{content: '\e843';font-family: "fontello";}
+		.jtico_ydnote:hover{color: rgb(11,167,241);}
+		.jtico_renren:before{content: '\e804';font-family: "fontello";}
+		.jtico_renren:hover{color: rgb(0,96,169);}
+		.jtico_weixin:before{content: '\e828';font-family: "fontello";}
+		.jtico_weixin:hover{color: rgb(150,200,35);}
+		.jtico_jiathis:before{content: '\e85a';font-family: "fontello";}
+		.jtico_jiathis:hover{color: rgb(122,199,68);}
+		.jiathis_style .jiadiv_01 .jtico:before{content: '\e85a\0020';font-family: "fontello";color:#888}
+		.jiathis_style .jiathis_txt {font-size: 15px;}
+		.jiathis_style a {color: #888;}
+		#jiathis_weixin_modal {line-height:1;width:300px !important;margin: -200px 0 0 -150px !important;}
+		#jiathis_webchat img, .ckepopBottom img, .jiathis_style img{width:auto; border: none; box-shadow:none;margin:0}

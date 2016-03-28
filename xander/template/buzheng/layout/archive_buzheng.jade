@@ -1,0 +1,18 @@
+extends buzheng/layout/base.jade
+{% from 'buzheng/layout/article.jade' import fn_article %}
+
+block title
+	{{"Archive-"~site.title }}
+
+total_posts = get_data(type='post', limit=300, sort='desc')
+entries = total_posts.group('-date:year+month')
+
+block content
+	for year, posts in entries
+		+fn_article(year[0]~'-'~year[1], 'link')
+			for post in posts
+				div(class="format-standard",style="margin-bottom: 25px;")
+					a(href=post.url,title=post.title)
+						h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+							post.title
+							time(datetime=post.date,style="float:right;font-size:10px")= post.date.format('%Y-%m-%d %a')

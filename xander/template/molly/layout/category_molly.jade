@@ -1,0 +1,57 @@
+if account.uid == '168931296'
+	extends buzheng/layout/base.jade
+else
+	extends molly/layout/-molly_base.jade
+{% from 'molly/layout/-article.jade' import fn_article %}
+
+block title
+	{{ "Category-"~site.title }}
+
+block widget
+	img(src="/t/molly/css/img/diary.png",style="position:fixed;bottom:0;right:0;z-index:99",alt="")
+
+block content
+	+fn_article('Categoties', 'link')
+		total_posts = get_data(type='post', limit=300, sort=1)
+		entries = group(total_posts, 'metadata:stamp')
+		for stamp, posts in entries
+			h2(id="{{stamp}}-ref")= stamp
+			for post in posts
+				div(class="format-{{post.metadata['stamp']}}",style="margin-bottom: 25px;")
+					a(href=post.url, title=post.title)
+						h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+							i(class="icon-{{post.metadata['stamp']}}")
+							post.title
+						time(datetime=post.date, style="float:right;font-size:10px")= post.date
+						
+	+fn_article('Genres', 'link')
+		p
+			for folder in categories
+				code
+					a(href="#{{ folder.title }}-ref")
+						i.icon-bookmark= folder.title
+		for folder in categories
+			posts = get_data(folder.title, type='post',limit=300, sort='desc')
+			if posts
+				h2(id="{{ folder.title }}-ref")= folder.title
+				for post in posts
+					if post.metadata.stamp
+						div(class="format-{{post.metadata.stamp}}",style="margin-bottom: 25px;")
+							a(href=post.url, title=post.title)
+								h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+									if post.metadata.stamp
+										i(class="icon-{{post.metadata.stamp}}")
+									else
+										i.icon-standard
+									post.title
+								time(datetime=post.date, style="float:right;font-size:10px")= post.date
+					else
+						.format-standard(style="margin-bottom: 25px;")
+							a(href=post.url, title=post.title)
+								h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+									if post.metadata.stamp
+										i(class="icon-{{post.metadata.stamp}}")
+									else
+										i.icon-standard
+									post.title
+								time(datetime=post.date, style="float:right;font-size:10px")= post.date

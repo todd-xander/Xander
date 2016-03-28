@@ -1,0 +1,79 @@
+extends buzheng/layout/base.jade
+{% from 'buzheng/layout/article.jade' import fn_article %}
+
+block title
+	{{ "About-"~site.title }}
+
+block content
+	if site.configs.site_author
+		title = site.configs.site_author
+	else
+		title = 'About Me'
+	style.
+	+fn_article(title, 'standard')
+		.page-content
+			site.content
+			.style-content-1.right
+				.small
+					img.alignnone(alt="",src="{{site.configs.avatar | default('http://placehold.it/230x290/eee&amp;text=Top Secret')}}")
+				.big
+					ul.style-1
+						li
+							|DOB
+							span.pull-right= site.configs.dob
+						li
+							|Gender
+							span.pull-right= site.configs.gender
+						li
+							|Nationality
+							span.pull-right= site.configs.nationality
+						li
+							|Relationship Status
+							span.pull-right= site.configs.relationshipstatus
+						li
+							|Mobile Phone
+							span.pull-right= site.configs.mobilephone
+						li
+							|Website
+							a(href="/")
+								span.pull-right= site.domain
+						li
+							|Languages
+							span.pull-right= site.configs.languages
+		h3= 'Work and Education'
+		p= site.configs.resume_description
+		ol.timeline
+			li.tl-wrap.pull-left.tl-danger
+				strong.tl-title= site.configs.exp1
+				str = site.configs.start1 +" to "+ site.configs.end1 +" · "+ site.configs.title1
+				span.tl-content= str
+			li.tl-wrap.pull-right
+				strong.tl-title= site.configs.exp2
+				str = site.configs.start2 +" to "+ site.configs.end2 +" · "+ site.configs.title2
+				span.tl-content= str
+			li.tl-wrap.pull-left
+				strong.tl-title= site.configs.exp3
+				str = site.configs.start3 +" to "+ site.configs.end3 +" · "+ site.configs.title3
+				span.tl-content= str
+			li.tl-wrap.pull-right
+				strong.tl-title= site.configs.exp4
+				str = site.configs.start4 +" to "+ site.configs.end4 +" · "+ site.configs.title4
+				span.tl-content= str
+		h3= 'Technical Experience'
+		p= site.configs.tech_description
+		strong= site.configs.tech1
+		.progress.progress-info
+			str = site.configs.decile1~"/10"
+			.bar(style="width: {{site.configs.decile1}}0%;")= str
+		strong= site.configs.tech2
+		.progress.progress-success
+			str = site.configs.decile2~"/10"
+			.bar(style="width: {{site.configs.decile2}}0%;")= str
+		strong= site.configs.tech3
+		.progress.progress-warning
+			str = site.configs.decile3~"/10"
+			.bar(style="width: {{site.configs.decile3}}0%;")= str
+		strong= site.configs.tech4
+		.progress.progress-danger
+			str = site.configs.decile4~"/10"
+			.bar(style="width: {{site.configs.decile4}}0%;")= str

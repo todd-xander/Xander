@@ -1,0 +1,39 @@
+if account.uid == '168931296'
+	extends buzheng/layout/base.jade
+	{% from 'buzheng/layout/article.jade' import fn_article %}
+else
+	extends molly/layout/-molly_base.jade
+	{% from 'molly/layout/-article.jade' import fn_article %}
+block title
+	{{"Archive-"~site.title }}
+
+block widget
+	img(src="/t/molly/css/img/diary.png",style="position:fixed;bottom:0;right:0;z-index:99",alt="")
+
+total_posts = get_data(type='post', limit=300, sort='desc')
+entries = total_posts.group('-date:year+month')
+
+block content
+	for year, posts in entries
+		+fn_article(year[0]~'-'~year[1], 'link')
+			for post in posts
+				if post.metadata.stamp
+					div(class="format-{{post.metadata.stamp}}",style="margin-bottom: 25px;")
+						a(href=post.url,title=post.title)
+							h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+								if post.metadata.stamp
+									i(class="icon-{{post.metadata.stamp}}")
+								else
+									i.icon-standard
+								post.title
+							time(datetime=post.date,style="float:right;font-size:10px")= post.date
+				else
+					div(class="format-standard",style="margin-bottom: 25px;")
+						a(href=post.url,title=post.title)
+							h5(style="padding-bottom: 4px;border-bottom: dotted 1px;margin: 0;")
+								if post.metadata.stamp
+									i(class="icon-{{post.metadata.stamp}}")
+								else
+									i.icon-standard
+								post.title
+							time(datetime=post.date,style="float:right;font-size:10px")= post.date

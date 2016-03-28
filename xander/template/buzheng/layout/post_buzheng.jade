@@ -1,0 +1,25 @@
+extends buzheng/layout/base.jade
+
+block title
+	post.title+"-"+site.title
+
+{% from 'buzheng/layout/article.jade' import fn_post %}
+
+block content
+	+fn_post(post)
+		post.content
+		include buzheng/layout/sns.jade
+
+	#paging.navigation
+		.unit-inner.unit-foot-inner
+			nav.pager
+				if pre_one
+					a.internal.prev(href=pre_one.url,title="View {{ pre_one.title }}")
+						i.icon-angle-circled-left
+						pre_one.title
+				if next_one
+					a.internal.next(href=next_one.url, title="View {{ next_one.title }}")
+						next_one.title
+						i.icon-angle-circled-right
+
+	include common/comments.html

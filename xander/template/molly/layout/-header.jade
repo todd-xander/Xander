@@ -1,0 +1,26 @@
+header
+	.menu-button
+		span.home-button.search-btn
+			i.icon-search.navicon
+	nav
+		ul#navigation.flexnav.lg-screen
+			li
+				a(href="/archive")
+					i.icon-archive
+					span.menu-info= "归档"
+			li
+				a(href="/folder")
+					i.icon-album
+					span.menu-info= "相册"
+			li
+				a(href="/about")
+					i.icon-about
+					span.menu-info= "关于"
+header
+	div.logo.imglogo
+		h1.logo
+			a(href="/")
+				if site.configs.site_logo
+					img(src=site.configs.site_logo,alt="")
+				else
+					site.title

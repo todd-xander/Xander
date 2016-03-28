@@ -1,0 +1,33 @@
+{% from 'buzheng/layout/article.jade' import fn_post %}
+{% from 'buzheng/layout/article.jade' import fn_article %}
+if request.args.s
+	posts = get_data(type='post', limit=4, pager_name='postlist', keywords=request.args.s)
+else
+	posts = get_data(type='post', limit=4, pager_name='postlist')
+
+if posts
+	for post in posts
+		+fn_post(post, site.configs.covered_post_summary)
+			post.content
+	#paging.navigation.group
+		.unit-inner.unit-foot-inner
+			nav.pager
+				paginator = get_paginator('postlist')
+				if paginator.has_previous
+					a(href=paginator.previous_page_url)
+						i.icon-angle-circled-left(style=" font-size: 25px; ")
+				else
+					span
+						i.icon-angle-circled-left(style=" font-size: 25px; ")
+
+				if paginator.has_next
+					a(href=paginator.next_page_url)
+						i.icon-angle-circled-right(style=" font-size: 25px; ")
+				else
+					span
+						i.icon-angle-circled-right(style=" font-size: 25px; ")
+				.clear
+
+else
+	+fn_article('未能找到请求内容','quote')
+		iframe(scrolling='no',frameborder='0',src='http://yibo.iyiyun.com/js/yibo404/key/7128',width='640',height='464',style='display:block;')

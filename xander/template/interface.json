@@ -1,0 +1,770 @@
+[
+    {
+        "title": "Site",
+        "title_zh_cn": "网站设置",
+        "groups": [
+            {
+                "title": "Site Info",
+                "title_zh_cn": "网站信息",
+                "cells": [
+                    {
+                        "parts_per_line": 2,
+                        "parts": [
+                            {
+                                "key": "title",
+                                "title": "Site Title",
+                                "title_zh_cn": "网站标题",
+                                "default_value": "My Site",
+                                "model": "text"
+                            },
+                            {
+                                "key": "avatar",
+                                "title": "Site Avatar (drag image here to replace)",
+                                "title_zh_cn": "网站头像 (拖入图片替换)",
+                                "model": "image",
+                                "width": 230,
+                                "height": 290,
+                                "value": "/_image/logo.jpg",
+                                "default_value": "http://placehold.it/230x290/eee"
+                            }
+                        ]
+                    },
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "title": "Site Description",
+                                "title_zh_cn": "网站描述",
+                                "key": "raw_content",
+                                "model":"textarea"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Author Info",
+                "title_zh_cn": "作者信息",
+                "cells": [
+                    {
+                        "parts_per_line": 3,
+                        "parts":[
+                            {
+                                "title": "DOB",
+                                "key": "dob",
+                                "title_zh_cn": "生日",
+                                "default_value": "Day of Birth"
+                            },
+                            {
+                                "title": "Gender",
+                                "title_zh_cn": "性别",
+                                "key": "gender",
+                                "model": "select",
+                                "default_value": "male",
+                                "value": "male",
+                                "options": [
+                                    {
+                                        "value": "Male",
+                                        "title": "Male"
+                                    },
+                                    {
+                                        "value": "Female",
+                                        "title": "Female"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Nationality",
+                                "title_zh_cn": "国籍",
+                                "key": "nationality",
+                                "value": "China",
+                                "default_value": "China"
+                            },
+                            {
+                                "title": "Ralationship Status",
+                                "title_zh_cn": "情感现状",
+                                "key": "relationshipstatus",
+                                "value": "Single",
+                                "default_value": "Single"
+                            },
+                            {
+                                "title": "Mobile Phone",
+                                "title_zh_cn": "手机",
+                                "key": "mobilephone",
+                                "value": "186-XXXX-XXXX",
+                                "default_value": "186-XXXX-XXXX"
+                            },
+                            {
+                                "title": "Languages",
+                                "title_zh_cn": "语言",
+                                "key": "languages",
+                                "value": "Mandarin",
+                                "default_value": "Mandarin"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Resume Info",
+                "title_zh_cn": "简历信息",
+                "cells": [
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "title": "Resume Description",
+                                "title_zh_cn": "经历概述",
+                                "key": "resume_description",
+                                "model":"textarea"
+                            }
+                        ]
+                    },
+                    {
+                        "parts_per_line": 4,
+                        "parts":[
+                            {
+                                "title": "Company",
+                                "title_zh_cn": "任职单位",
+                                "key": "exp1",
+                                "default_value": "Company"
+                            },
+                            {
+                                "title": "Start Time",
+                                "title_zh_cn": "入职时间",
+                                "key": "start1",
+                                "default_value": "Start time"
+                            },
+                            {
+                                "title": "End Time",
+                                "title_zh_cn": "离职时间",
+                                "key": "end1",
+                                "default_value": "End time"
+                            },
+                            {
+                                "title": "Title",
+                                "title_zh_cn": "职务名称",
+                                "key": "title1",
+                                "default_value": "Title"
+                            },
+                            {
+                                "title": "Company",
+                                "title_zh_cn": "任职单位",
+                                "key": "exp2",
+                                "default_value": "Company"
+                            },
+                            {
+                                "title": "Start Time",
+                                "title_zh_cn": "入职时间",
+                                "key": "start2",
+                                "default_value": "Start time"
+                            },
+                            {
+                                "title": "End Time",
+                                "title_zh_cn": "离职时间",
+                                "key": "end2",
+                                "default_value": "End time"
+                            },
+                            {
+                                "title": "Title",
+                                "title_zh_cn": "职务名称",
+                                "key": "title2",
+                                "default_value": "Title"
+                            },
+                            {
+                                "title": "Company",
+                                "title_zh_cn": "任职单位",
+                                "key": "exp3",
+                                "default_value": "Company"
+                            },
+                            {
+                                "title": "Start Time",
+                                "title_zh_cn": "入职时间",
+                                "key": "start3",
+                                "default_value": "Start time"
+                            },
+                            {
+                                "title": "End Time",
+                                "title_zh_cn": "离职时间",
+                                "key": "end3",
+                                "default_value": "End time"
+                            },
+                            {
+                                "title": "Title",
+                                "title_zh_cn": "职务名称",
+                                "key": "title3",
+                                "default_value": "Title"
+                            },
+                            {
+                                "title": "Company",
+                                "title_zh_cn": "任职单位",
+                                "key": "exp4",
+                                "default_value": "Company"
+                            },
+                            {
+                                "title": "Start Time",
+                                "title_zh_cn": "入职时间",
+                                "key": "start4",
+                                "default_value": "Start time"
+                            },
+                            {
+                                "title": "End Time",
+                                "title_zh_cn": "离职时间",
+                                "key": "end4",
+                                "default_value": "End time"
+                            },
+                            {
+                                "title": "Title",
+                                "title_zh_cn": "职务名称",
+                                "key": "title4",
+                                "default_value": "Title"
+                            }
+                        ]
+                    },
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "title": "Tech Description",
+                                "title_zh_cn": "技能概述",
+                                "key": "tech_description",
+                                "model":"textarea"
+                            }
+                        ]
+                    },
+                    {
+                        "parts_per_line": 2,
+                        "parts":[
+                            {
+                                "title": "Technical",
+                                "title_zh_cn": "技术",
+                                "key": "tech1"
+                            },
+                            {
+                                "title": "Decile",
+                                "title_zh_cn": "掌握程度（10分制）",
+                                "key": "decile1",
+                                "value": 10
+                            },
+                            {
+                                "title": "Technical",
+                                "title_zh_cn": "技术",
+                                "key": "tech2"
+                            },
+                            {
+                                "title": "Decile",
+                                "title_zh_cn": "掌握程度（10分制）",
+                                "key": "decile2",
+                                "value": 10
+                            },
+                            {
+                                "title": "Technical",
+                                "title_zh_cn": "技术",
+                                "key": "tech3"
+                            },
+                            {
+                                "title": "Decile",
+                                "title_zh_cn": "掌握程度（10分制）",
+                                "key": "decile3",
+                                "value": 10
+                            },
+                            {
+                                "title": "Technical",
+                                "title_zh_cn": "技术",
+                                "key": "tech4"
+                            },
+                            {
+                                "title": "Decile",
+                                "title_zh_cn": "掌握程度（10分制）",
+                                "key": "decile4",
+                                "value": 10
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Contents Display",
+                "title_zh_cn": "内容显示",
+                "cells":[
+                    {
+                        "parts_per_line": 3,
+                        "parts":[
+                            {
+                                "key": "posts_per_page",
+                                "title": "Posts per Page",
+                                "title_zh_cn": "每页显示日志数",
+                                "default_value": 3
+                            },
+                            {
+                                "key": "post_content_type",
+                                "title": "Post Content Type",
+                                "title_zh_cn": "正文格式",
+                                "model": "select",
+                                "default_value": "markdown",
+                                "options": [
+                                    {
+                                        "value": "markdown",
+                                        "title": "Markdown"
+                                    },
+                                    {
+                                        "value": "plain",
+                                        "title": "Plain Text with Images"
+                                    }
+                                ],
+                                "options_zh_cn": [
+                                    {
+                                        "value": "markdown",
+                                        "title": "Markdown"
+                                    },
+                                    {
+                                        "value": "plain",
+                                        "title": "普通文本+图片"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "covered_post_summary",
+                                "title": "Style for posts with cover image",
+                                "title_zh_cn": "有封面图文章在主页显示方式",
+                                "model": "select",
+                                "default_value": "summary",
+                                "options": [
+                                    {
+                                        "value": "normal",
+                                        "title": "Normal"
+                                    },
+                                    {
+                                        "value": "summary",
+                                        "title": "Summary"
+                                    }
+                                ],
+                                "options_zh_cn": [
+                                    {
+                                        "value": "normal",
+                                        "title": "全文显示"
+                                    },
+                                    {
+                                        "value": "summary",
+                                        "title": "缩略图显示"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "file_path",
+                                "title": "Albums Root Path",
+                                "title_zh_cn": "相册根目录",
+                                "model": "select",
+                                "options": "root"
+                            },
+                            {
+                                "key": "show_toc",
+                                "title": "Table of Contents",
+                                "title_zh_cn": "正文自动目录",
+                                "model": "select",
+                                "default_value": "no",
+                                "options": [
+                                    {
+                                        "value": "no",
+                                        "title": "Not Display"
+                                    },
+                                    {
+                                        "value": "yes",
+                                        "title": "Display"
+                                    }
+                                ],
+                                "options_zh_cn": [
+                                    {
+                                        "value": "no",
+                                        "title": "不显示"
+                                    },
+                                    {
+                                        "value": "yes",
+                                        "title": "显示"
+                                    }
+                                ]
+                            },
+                             {
+                                "key": "mathjax",
+                                "title": "Use MathJax",
+                                "title_zh_cn": "使用MathJax",
+                                "model": "select",
+                                "default_value": "no",
+                                "options": [
+                                    {
+                                        "value": "no",
+                                        "title": "No"
+                                    },
+                                    {
+                                        "value": "yes",
+                                        "title": "Yes"
+                                    }
+                                ],
+                                "options_zh_cn": [
+                                    {
+                                        "value": "no",
+                                        "title": "不"
+                                    },
+                                    {
+                                        "value": "yes",
+                                        "title": "使用"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+
+            },
+            {
+                "title":"External Comment",
+                "title_zh_cn":"外部评论",
+                "cells":[
+                    {
+                        "parts_per_line": 3,
+                        "parts":[
+                            {
+                                "key": "jiathis",
+                                "title": "JiaThis",
+                                "title_zh_cn": "加网",
+                                "default_value": "JiaThis ID"
+                            },
+                            {
+                                "key": "duoshuo",
+                                "title": "DuoShuo",
+                                "title_zh_cn": "多说",
+                                "default_value": "DuoShuo ID"
+                            },
+                            {
+                                "key": "disqus",
+                                "title": "Disqus",
+                                "default_value": "Disqus ID"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title":"Social Info",
+                "title_zh_cn":"社交信息",
+                "cells":[
+                    {
+                        "parts_per_line": 3,
+                        "parts":[
+                            {
+                                "key": "twitter",
+                                "title": "Twitter",
+                                "default_value": "Twitter ID"
+                            },
+                            {
+                                "key": "weibo",
+                                "title": "Weibo",
+                                "title_zh_cn": "微博",
+                                "default_value": "Weibo ID"
+                            },
+                            {
+                                "key": "github",
+                                "title": "Github",
+                                "default_value": "Github ID"
+                            },
+                            {
+                                "key": "douban",
+                                "title": "DouBan",
+                                "title_zh_cn": "豆瓣",
+                                "default_value": "DouBan ID"
+                            },
+                            {
+                                "key": "gplus",
+                                "title": "Google+",
+                                "default_value": "Google+ ID"
+                            },
+                            {
+                                "key": "email",
+                                "title": "Email",
+                                "title_zh_cn": "电子邮箱",
+                                "default_value": "Email Address"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "TemplateEngine",
+        "title_zh_cn": "模板引擎",
+        "groups":[
+            {
+                "title":"Runtime",
+                "title_zh_cn":"运行",
+                "cells":[
+                    {
+                        "parts_per_line": 3,
+                        "parts":[
+                            {
+                                "key": "template_priority",
+                                "title": "Template Priority",
+                                "title_zh_cn": "模板优先级",
+                                "model": "select",
+                                "default_value": "package",
+                                "options": [
+                                    {
+                                        "value": "package",
+                                        "title": "Template Package"
+                                    },
+                                    {
+                                        "value": "clone",
+                                        "title": "Cloned Template"
+                                    },
+                                    {
+                                        "value": "self",
+                                        "title": "Custom Template"
+                                    }
+                                ],
+                                "options_zh_cn": [
+                                    {
+                                        "value": "package",
+                                        "title": "模板包"
+                                    },
+                                    {
+                                        "value": "clone",
+                                        "title": "克隆的模板"
+                                    },
+                                    {
+                                        "value": "self",
+                                        "title": "自定义模板"
+                                    },
+                                    {
+                                        "value": "default",
+                                        "title": "默认模板"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "template_inherit",
+                                "title": "Template Inherit",
+                                "title_zh_cn": "模板继承",
+                                "model": "select",
+                                "default_value": "yes",
+                                "options": [
+                                    {
+                                        "value": "yes",
+                                        "title": "Inherits Default Template"
+                                    },
+                                    {
+                                        "value": "no",
+                                        "title": "No Inherit"
+                                    }
+                                ],
+                                "options_zh_cn": [
+                                    {
+                                        "value": "yes",
+                                        "title": "从默认模板继承"
+                                    },
+                                    {
+                                        "value": "no",
+                                        "title": "不继承"
+                                    }
+                                ]
+                            }
+
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Insert Scripts",
+                "title_zh_cn":"插入脚本",
+                "cells":[
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "key": "scripts_per_page",
+                                "title": "Insert following code into every HTML page.",
+                                "title_zh_cn": "将下面的代码插入到每个HTML页面中",
+                                "model":"textarea"
+                            },
+                            {
+                                "key": "scripts_for_doc",
+                                "title": "Insert following code into Doc(post/image) page.",
+                                "title_zh_cn": "将下面的代码插入到文档(日志或图片)详细页中",
+                                "model":"textarea"
+                            }
+                        ]
+                    }
+                ]
+            }
+
+        ]
+    },
+    {
+        "title": "Advanced",
+        "title_zh_cn": "高级",
+        "groups":[
+            {
+                "title": "Feature",
+                "title_zh_cn": "功能",
+                "cells":[
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "key": "live",
+                                "title": "Make my site auto reload & preview in realtime (in next 10 minutes).",
+                                "title_zh_cn": "让我的网站保持实时更新预览（有效时间为10分钟）",
+                                "model":"check",
+                                "default_value": "no"
+                            },
+                            {
+                                "key": "no_editor",
+                                "title": "Disable the Editor which one make you write directly on the Web Page",
+                                "title_zh_cn": "禁用`可直接在页面中书写的编辑器`",
+                                "model":"check",
+                                "default_value": "no"
+                            }
+
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Data",
+                "title_zh_cn": "数据",
+                "cells":[
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "key": "comment",
+                                "title": "Comments Allowed (if not, visitors can't comment on your posts or images).",
+                                "title_zh_cn": "允许评论（如不勾选，则访客无法评论你的文章、图片）",
+                                "model":"check",
+                                "default_value": "yes"
+                            },
+                            {
+                                "key": "sync_by_3rd",
+                                "title": "Other people put data into your site will be allowed (in the `share` folder).",
+                                "title_zh_cn": "允许其他人推送内容到你的网站(`share`目录下)",
+                                "model":"check",
+                                "default_value": "no"
+                            },
+                            {
+                                "key": "sync_by_3rd_public",
+                                "title": "No need to login when other people put data into your site.",
+                                "title_zh_cn": "其他人推送内容时，无需登录",
+                                "model":"check",
+                                "default_value": "no"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title":"Data Mining",
+                "title_zh_cn":"数据挖掘",
+                "cells":[
+                    {
+                        "parts_per_line": 3,
+                        "parts":[
+                            {
+                                "key": "score_degree",
+                                "title": "Hottest Sort Degree(days)",
+                                "title_zh_cn": "热门排序维度(天)",
+                                "default_value": 0.5
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            {
+                "title": "URLs Forbidden",
+                "title_zh_cn":"URLs禁止访问",
+                "cells":[
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "key": "hidden_urls",
+                                "title": "URL Paths to be forbidden, one record one line, `the_path` or `the_path/*`",
+                                "title_zh_cn": "如果访问路径为以下所示，将禁止访问，每行一条记录，`the_path`或`the_path/*`",
+                                "model":"textarea",
+                                "is_list": true
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            {
+                "title": "Passwords for Visitors",
+                "title_zh_cn":"访问密码",
+                "cells":[
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "key": "users",
+                                "title": "Visitors must input the username and password to access, format is 'username@password', one record one line",
+                                "title_zh_cn": "访客须输入用户名、密码才能访问，格式为'username@password', 每行一条记录 ",
+                                "model":"textarea",
+                                "is_list": true
+                            },
+                            {
+                                "key": "password_keep_long",
+                                "title": "Remember the status of visitor's login for 180 days.",
+                                "title_zh_cn":"记住访客的登录状态，最长180天。",
+                                "model": "check"
+                            }
+                        ]
+                    }
+                ]
+            }
+
+        ]
+
+    },
+    {
+        "title": "Bind",
+        "title_zh_cn": "域名",
+        "groups":[
+            {
+                "title": "Bind Domain",
+                "title_zh_cn": "域名绑定",
+                "cells": [
+                    {
+                        "parts_per_line": 2,
+                        "parts": [
+                            {
+                                "key": "domain",
+                                "title": "Domain  <a target='_blank' href='http://doc.farbox.com/read/domain'> need help?</a>",
+                                "title_zh_cn": "域名 <a target='_blank' href='http://doc.farbox.com/read/domain'> need help?</a>"
+
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Multi Domains Binding",
+                "title_zh_cn":"多域名绑定",
+                "cells":[
+                    {
+                        "parts_per_line": 1,
+                        "parts":[
+                            {
+                                "key": "domains",
+                                "title": "one line one domain which needed to bind, no more than 10 lines.",
+                                "title_zh_cn": "每行一条需绑定的域名，最多不超过10条",
+                                "model":"textarea",
+                                "is_list": true
+                            }
+                        ]
+                    }
+                ]
+            }
+
+        ]
+    }
+]

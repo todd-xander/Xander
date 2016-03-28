@@ -1,0 +1,16 @@
+if account.uid == '168931296'
+	extends buzheng/layout/base.jade
+	{% from 'buzheng/layout/article.jade' import fn_article %}
+else
+	extends molly/layout/-molly_base.jade
+	{% from 'molly/layout/-article.jade' import fn_article %}
+
+block title
+	site.title
+
+block content
+	+fn_article('未能找到请求页面','quote')
+		if error
+			{{ error | linebreaks }}
+			hr
+		<iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/js/yibo404/key/7128' width='640' height='464' style='display:block;'></iframe>

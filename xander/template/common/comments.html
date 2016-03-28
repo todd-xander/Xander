@@ -1,0 +1,188 @@
+<div id='comment'>
+{% if site.configs['duoshuo'] %}
+<!-- Duoshuo Comment BEGIN -->
+<style type="text/css">
+#comment {padding-bottom: 50px;}
+#ds-thread #ds-reset ul.ds-comments-tabs li.ds-tab a.ds-current {border:0px;color:#333;text-shadow:none;background:#ddd}
+#ds-thread #ds-reset .ds-highlight {font-size:14px;font-weight:bold;color:#666 !important;}
+#ds-thread #ds-reset ul.ds-comments-tabs li.ds-tab a.ds-current:hover {color:#333;background:#bbb}
+#ds-thread #ds-reset a.ds-highlight:hover {color:#696a52 !important;}
+#ds-thread #ds-reset li.ds-post,#ds-thread #ds-reset #ds-hot-posts {overflow:visible}
+#ds-thread #ds-reset .ds-post-self {padding:10px 0 10px 10px;}
+#ds-thread #ds-reset li.ds-post,#ds-thread #ds-reset .ds-post-self {border:0 !important;}
+#ds-reset .ds-avatar, #ds-thread #ds-reset ul.ds-children .ds-avatar {position:absolute;top:26px;left:-14px;padding:5px;width:36px;height:36px;box-shadow:-1px 0 1px rgba(0,0,0,.15) inset;border-radius:46px; background:#F7F6F2;}
+#ds-thread #ds-reset ul.ds-children .ds-avatar {left:-23px;}
+#ds-thread .ds-avatar a {display:inline-block;padding:1px; width:32px;height:32px;border:1px solid #ddd;border-radius:50%; background-color:#fff !important}
+#ds-thread .ds-avatar > img {margin:2px 0 0 2px}
+#ds-thread #ds-reset .ds-replybox {box-shadow:none;}
+#ds-thread #ds-reset ul.ds-children .ds-replybox.ds-inline-replybox a.ds-avatar,
+#ds-reset .ds-replybox.ds-inline-replybox a.ds-avatar {left: 0;top: 0; padding: 0;width: 32px !important;height: 32px !important; background: none;box-shadow: none; }
+#ds-reset .ds-replybox.ds-inline-replybox a.ds-avatar img {width: 32px !important;height: 32px !important; border-radius:50%;}
+#ds-reset .ds-replybox a.ds-avatar,
+#ds-reset .ds-replybox .ds-avatar img { padding:0;width:50px !important;height:50px !important; border-radius:5px; }
+#ds-reset .ds-avatar img {width:32px !important;height:32px !important;border-radius:32px;box-shadow:0 1px 3px rgba(0, 0, 0, 0.22);}
+#ds-thread #ds-reset .ds-comment-body {background: #F8F8F0;padding:15px 15px 12px 32px;border-radius:2px; box-shadow:0 1px 2px rgba(0,0,0,.15), 0 1px 0 rgba(255,255,255,.75) inset;}
+#ds-thread #ds-reset .ds-comment-body:before {
+    -webkit-transform: skew(-6deg) rotate(-5deg);
+    -moz-transform: skew(-6deg) rotate(-5deg);
+    -o-transform: skew(-6deg) rotate(-5deg);
+    transform: skew(-6deg) rotate(-5deg);
+    -webkit-box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.3);
+    top: 35px;
+}
+#ds-thread #ds-reset .ds-comment-body:after {
+    -webkit-transform: skew(6deg) rotate(5deg);
+    -moz-transform: skew(6deg) rotate(5deg);
+    -o-transform: skew(6deg) rotate(5deg);
+    transform: skew(6deg) rotate(5deg);
+    -webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    bottom: 30px;
+}
+#ds-thread #ds-reset .ds-comment-body:before, #ds-thread #ds-reset .ds-comment-body:after {
+    width: 60%;
+    height: 48%;
+    content: ' ';
+    position: absolute;
+    right: 2px;
+    z-index: -1;
+}
+@media all and (max-width: 800px) {
+	#ds-thread #ds-reset .ds-comment-body:before, #ds-thread #ds-reset .ds-comment-body:after {
+    	width: 0;
+    	height: 0;
+    	content: none;
+	}
+}
+#ds-thread #ds-reset ul.ds-children {margin-left: 10px;border-left: 2px solid #ddd;padding-left: 30px;}
+#ds-thread #ds-reset .ds-comment-body p{color:#666;}
+#ds-thread #ds-reset #ds-bubble a{color:#555 !important;}
+#ds-thread #ds-reset #ds-bubble a:hover{color:#555 !important;}
+#ds-thread #ds-reset .ds-comments a.ds-user-name {font-weight:bold;color:#888 !important;}
+#ds-thread #ds-reset a.ds-comment-context {color: #888 !important;}
+#ds-thread #ds-reset #ds-hot-posts {border:0}
+#ds-reset #ds-hot-posts .ds-gradient-bg {background:none;}
+#ds-reset #ds-bubble #ds-ctx .ds-ctx-entry {padding:0;}
+#ds-reset #ds-bubble .ds-avatar, #ds-reset #ds-bubble #ds-ctx-bubble .ds-avatar a {position:static;padding:0;border:0; background:none;box-shadow:none;}
+#ds-reset #ds-bubble .ds-avatar img, #ds-reset #ds-bubble #ds-ctx-bubble .ds-avatar a {width:45px !important;height:45px !important;}
+#ds-reset #ds-bubble .ds-user-name{padding-left:13px;}
+#ds-reset .ds-comment-body #ds-ctx {border-left:1px solid #b9baa6;background-color:#e8e8dc !important}
+#ds-reset #ds-ctx {margin-right:-15px}
+#ds-reset #ds-ctx .ds-ctx-entry {position:relative;padding:10px 30px 10px 10px;}
+#ds-reset #ds-ctx .ds-ctx-entry .ds-avatar {top:6px;left:5px;background:none;box-shadow:none;}
+#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-body {margin-left:46px;}
+#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-content {color:#666}
+#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {color:#696A52;font-weight:bold}
+#ds-reset .ds-service-icon, #ds-reset .ds-service-icon-grey {width: 14px !important;height: 14px !important;}
+#ds-indicator{top:auto;bottom:0px !important;left:3px !important;border-radius:3px !important;}
+</style>
+	<div class="ds-thread" data-title="{{ post.title }}" data-thread-key="{{ post.title }}" style=" margin: 0 10px; "></div>
+<!-- Duoshuo Comment END -->
+{% elif site.configs['disqus'] %}
+    <div id="disqus_thread" style="padding: 80px 5% 0 5%;"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '{{site.configs['disqus']}}'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<div id="fb_comments_container" style="display:none;">
+    <ul id="fb_comments">
+        {% set comments = get_comments(context_doc) %}
+        {% for comment in comments %}
+            <li class="comment">
+                <div class="avatar">
+                    <img src="http://www.gravatar.com/avatar/{{ comment.email_md5 }}">
+                </div>
+                <div class="c_content">
+
+                    <div class="author">
+                        <a href="{{comment.site or '#'}}"><b>{{ comment.author or '匿名'}}</b></a>
+                        <small>{{ comment.date | date("%Y-%m-%d %H:%M:%S") }}</small>
+                    </div>
+
+                    <div>
+                        {{ comment.content }}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{%else%}
+    {% if comment_allowed %}
+    <form id="fb_new_comment" method="post" action="#fb_new_comment">
+
+        <textarea name="content">{{ comment_content }}</textarea>
+
+        {% if error %}<span class="comment_error"> {{ error }}</span> {% endif %}
+
+        <div class="input_body">
+            <ul>
+                <li>
+                    <label>称呼:</label>
+                    <input type="text" name="author" id="c_author">
+                </li>
+                <li>
+                    <label>邮箱:</label>
+                    <input type="text" name="email" id="c_email">
+                </li>
+                <li>
+                    <label>网站:</label>
+                    <input type="text" name="site" id="c_site">
+                </li>
+                <li>
+                    <input type="submit" value="发表评论" class="c_button" id="c_submit"/>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </form>
+
+    <script src="http://resource.farbox.com/swfstore/swfstore.min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+
+        var c_submit = document.getElementById('c_submit');
+        var c_author = document.getElementById('c_author');
+        var c_email = document.getElementById('c_email');
+        var c_site = document.getElementById('c_site');
+
+        c_submit.onclick = function(){
+            info_store.set('name', c_author.value);
+            info_store.set('email', c_email.value);
+            info_store.set('site', c_site.value);
+        };
+        var info_store = new SwfStore({
+            namespace: 'farbox',
+            swf_url: 'http://resource.farbox.com/swfstore/storage.swf',
+            debug: true,
+            onready: function(){
+                c_author.value = info_store.get('name') || '';
+                c_email.value = info_store.get('email') || '';
+                c_site.value = info_store.get('site') || '';
+
+            },
+            onerror: function(){
+            }
+        });
+
+    </script>
+    {% endif %}
+
+{% endif %}
+</div>

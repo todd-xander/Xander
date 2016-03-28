@@ -1,0 +1,154 @@
+head
+	meta(http-equiv="Content-Type",content="text/html; charset=UTF-8")
+	<title>{% block title %}{{ site.title }}{% endblock %}</title>
+	meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+	meta(name="author",content="{{site.configs['site_author']}}")
+	link#favicon(href="data:image;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AER3zABmZlUAmbv/ADNViABVqv8AiJnMAGaImQDM3f8AVWZ3AESI7gB3qu4AM3eqAJm73QBmiLsAqszuAHd3ZgBVd6oAu8z/ADNEdwAiVZkAiKr/AERmiACIu+4AZnd3ADNmuwBVme4AVXeIAIiq3QBEZqoAd5m7AHeIqgDM7v8Au93/AFVmVQCqzP8AVWZmADNVmQCIu/8AZndmAJmq/wCZu+4Ad6r/AESZ7gAzd7sAVaruAGZ3iABmqu4ARHeqAFV3mQBmme4AZneZAESIzACIqswAZoiqAHeZzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjCiAgHCURAAAAAAAAACM3ECIQNiIkBxkAAAAAAAMfFikiCSIiBBYqKAAAACM0JAQPIhMTIgcqJB8ZAAAvJCQkFyQkJCQyHSQkOAAACh8dJCQiIiIiIiQkNwgAAAAUMyQiIgkhIiIkBBUAAAAABTMkIiIiCSIiJAQaAAAAABUMHQ4iIiIiEAckAgAAAAAmGCQkJCQkJCQkJAIAAAAANwwkBAwwKyckJAQeAAAAAAAxCywNLgYGGzA1AAAAAAAAADcNLQYGLjUxAAAAAAAAAAAAADEuLjcAAAAAAAAAAAAAAAAAEg0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAPAADgBwAAwAMAAIABAACAAQAAgAEAAMADAADAAwAAwAMAAMADAADAAwAA4AcAAPAPAAD8PwAA/n8AAP//AAA=",rel="icon",type="image/x-icon")
+	link(href="/feed",type="application/rss+xml",rel="alternate",title="Sitewide RSS Feed")
+	script(src="https://yui-s.yahooapis.com/3.8.0/build/yui/yui-min.js")
+	load("/t/buzheng/css/",["style.css","fontello-codes.css","flexslider.css","jquery.fancybox.css","flexnav.css"])
+	load("/t/common/",["jquery.js","jquery.pjax.js","jquery.flexnav.min.js","jquery.flexslider-min.js","jquery.fitvids.js","jquery.fancybox.pack.js"])
+	script
+		var no_reload_for_posts = true;
+		var user_id = "{{account_id}}";
+	if site.configs.duoshuo
+		script.
+			var duoshuoQuery = {short_name:"{{site.configs.duoshuo}}"};
+			(function() {
+				var ds = document.createElement('script');
+				ds.type = 'text/javascript';ds.async = true;
+				ds.src = 'http://static.duoshuo.com/embed.js';
+				ds.charset = 'UTF-8';
+				(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+			})();
+	if site.configs.jiathis
+		script.
+			var jiathisQuery = "{{site.configs['jiathis']}}";
+	script.
+		function toggleDuoshuoComments(container){
+			if(typeof DUOSHUO != 'undefined')
+			{
+				var el = document.createElement('div');
+				el.setAttribute('data-thread-key', $('.ds-thread').attr('data-title'));
+				el.setAttribute('data-url',window.location.href);
+				DUOSHUO.EmbedThread(el);
+				$(container).append(el);
+			}
+		}
+		function jiathis(container){
+			if(typeof jiathisQuery != 'undefined')
+			{
+				var ds = document.createElement('script');
+				ds.type = 'text/javascript';ds.async = true;
+				ds.src = 'http://v3.jiathis.com/code_mini/jia.js?uid='+jiathisQuery;
+				ds.charset = 'UTF-8';
+				$(container).append(ds);
+			}
+		}
+		$(document).ready( function($) {
+			$(document).pjax("header a, #page a:not(:has(img)), #menu a", "#pjax",{ timeout: 10000, fragment:'#pjax'});
+			$(".flexnav").flexNav();
+			$('.flexslider').flexslider({directionNav: false});
+			$(".fitvid").fitVids();
+			$("a:has(img)").fancybox({loop:false});
+			$("#pjax").bind("pjax:start",function(){
+				$(".menu--open .menu__handle").click();
+				$("[name='s']").val("");
+				$("#pjax").children().hide();
+				$("body").scrollTop(0);
+				$('#loading').show();
+			});
+			$("#pjax").bind("pjax:end",function(){
+				$('#loading').hide();
+				$("#pjax").hide();
+				$('.flexslider').flexslider({directionNav: false});
+				$(".fitvid").fitVids();
+				jiathis($('#pjax'));
+				toggleDuoshuoComments(".ds-thread");
+				$("a:has(img)").fancybox({loop:false});
+				$("style:contains('MathJax')").remove();
+				$('script[src="/service/static_3rd/staticfile/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS_HTML-full.js"]').remove();
+				$('#MathJax_Font_Test').remove();
+				MathJax = undefined;
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				script.src = "/service/static_3rd/staticfile/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS_HTML-full.js";
+				script.innerHTML = 'MathJax.Hub.Config({tex2jax: {inlineMath: [ ["$","$"]]},extensions: ["jsMath2jax.js", "tex2jax.js"], messageStyle: "none"});';
+				document.body.appendChild(script);
+				$("#pjax").fadeIn(1000);
+			});
+		})
+		function search(){
+			jQuery('#for_search').attr('href', '{{request.url_root}}?s='+encodeURIComponent(jQuery("[name='s']").val()));
+			jQuery('#for_search').click();
+			jQuery('.action.search').toggleClass('active');
+			return false;
+		}
+body
+	nav#menu.menu
+		a#for_search(href="/",style="display:none;")
+		button.menu__handle
+			span Menu
+		.menu__inner
+			ul
+				li
+					a#logo(href="/about",style="background-image: url('{{site.configs.avatar}}');")
+					a#logo_text(href="/") {{site.title}}
+				li
+					form#searchform(onsubmit="return search();")
+						input.search-query(type="text",name="s",placeholder="Search")
+					i.icon-search#search-icon
+				li
+					div(style='font-size: 0.9em;color: #666;text-shadow: none;padding-left: 20px;line-height:3em;') 试验室
+					a(href='/reader', title="待转正的阅读器小盆友") RSS阅读器
+					a(href='/lab?exp=163music', title="待转正的播放器小盆友") 网易云音乐
+	.main#main
+		#page
+			ul.top_menu
+				li
+					a(href="/")
+						i.icon-home
+						span Home
+				li
+					a(href="/archive")
+						i.icon-archive
+						span Archive
+				li
+					a(href="/folder")
+						i.icon-gallery
+						span Album
+				li
+					a(href="/about")
+						i.icon-about
+						span About
+			#loading(style="display:none;")
+				i.icon-cog-outline.animate-spin
+			#pjax
+				{% block content %}{% endblock %}
+			include buzheng/layout/footer.jade
+	script
+			(function() {
+				function SVGMenu( el, options ) {
+					this.el = el;
+					this.init();
+				}
+				SVGMenu.prototype.init = function() {
+					this.trigger = this.el.querySelector( 'button.menu__handle' );
+					this.initEvents();
+				};
+				SVGMenu.prototype.initEvents = function() {
+					this.trigger.addEventListener( 'click', this.toggle.bind(this) );
+				};
+				SVGMenu.prototype.toggle = function() {
+					var self = this;
+					if( $(self.el).hasClass( 'menu--open' ) ) {
+						setTimeout( function() { $(self.el).removeClass( 'menu--open' );}, 10 );
+					}
+					else {
+						setTimeout( function() { $(self.el).addClass( 'menu--open' );
+							$(".menu.menu--open").siblings("#main").on("click",function(){$(self.el).removeClass( 'menu--open' );});
+						}, 10 );
+					}
+				};
+				new SVGMenu( document.getElementById( 'menu' ) );
+			})();
